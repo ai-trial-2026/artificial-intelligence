@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- MathJax for mathematical notation -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
+    <!-- Syntax Highlighting with highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/android-chrome-512x512.png">
+    
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href=../assets/colours.css>
+    <link rel="stylesheet" href="../assets/shared-styles.css">
+    <link rel="stylesheet" href="../assets/nav-bar.css">
+    <link rel="stylesheet" href="../assets/module_card.css">
+    <link rel="stylesheet" href="../assets/learning_outcomes.css">
+    <link rel="stylesheet" href="../assets/learning_lists.css">
+    <link rel="stylesheet" href="../assets/box_styles.css">
+    <link rel="stylesheet" href="../assets/code_styles.css">
+    <link rel="stylesheet" href="../assets/static_output.css">
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2D - AI2 - Biological CNN software</title>
+        
+</head>
+<body>
+    
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <a href="../homepage.html" style="text-decoration: none; display: inline-block;">
+                <img src="../assets/scryptIQ_logo_dark.png" alt="scryptIQ Logo" class="sidebar-logo">
+            </a>
+        </div>
+
+        <h3>Content</h3>
+        <ul>
+            <li><a href="./introduction.html" class="">Introduction</a></li><li><a href="./what-is-a-cnn.html">Convolutional Neural Networks</a></li><li><a href="./pytorch-implementation.html">Implementing a CNN in PyTorch</a></li><li><a href="./case-study.html">CNN Case Study</a></li>
+            <li>
+                <div class="nav-toggle active" data-target="expandable-section-4">
+                    Biological CNN software
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <ul class="nested-nav expanded" id="expandable-section-4"><li><a href="#introduction">Introduction</a></li><li><a href="#biological-image-software">Biological Image Software</a></li><li><a href="#downloading-pre-trained-modles">Downloading Pre-trained Modles</a></li>
+                </ul>
+            </li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
+        </ul>
+
+        <h3 class="collapsible-header collapsed">
+            Resources
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+                <li><a href="./glossary.html">Glossary</a></li><li><a href="./downloads.html">Downloads</a></li><li><a href="../HB/introduction.html">Handbook</a></li>
+            </ul>
+        </div>
+
+        <h3 class="collapsible-header collapsed">
+            Previous Modules
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+            <li><a href="../AI1/introduction.html">AI1</a></li>
+        </ul>
+        </div>
+
+        <h3>
+            <li><a href="./report-issue.html">Report an Issue</a></li>
+        </h3>
+    </div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle">❮</button>
+    
+    <!-- Main Content Area -->
+    <div id="main-content" class="main-content">
+        <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <h1 class="page-title">Artificial Intelligence 2</h1>
+            <div class="nav-actions">
+                <a href="../homepage.html" class="text-button" title="Materials homepage">
+                    Homepage
+                </a>
+                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    Learn to Discover
+                </a>
+            </div>
+        </div>
+
+        
+            <div class="module-card" id="introduction">
+                <div class="module-header">
+                    Biological CNN software <span class="module-tag">AI2</span>
+                </div>
+                <div class="module-body">
+                    <p>As discussed in the <a href="./pytorch-implementation.html#challenges">Challenges</a> section, often for the task in hand you don&#x27;t need to implement your own CNN from scratch. Over the years there has been many open-source software packages that implement pre-trained models for a range of tasks. This includes the extraction of cell information from microscopy images, animal pose estimation, and many more...</p><p>In this page we will just introduce a few of these softwares, as well as how to download pre-trained models for transfer learning.</p>
+                </div>
+            </div>
+            
+            <div class="module-card" id="biological-image-software">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Biological Image Software</h3>
+                        <p>Below is a summary of a few of the open-source packages that we know of. This list is by no means exhaustive nor have we been asked to promote them. However, you may find it useful as a place to start.</p><h4>Segmentation</h4><p><br><strong><a href="https://cellpose.readthedocs.io/">Cellpose</a></strong> - A generalist algorithm for cellular segmentation that works across different cell types and imaging modalities. Uses a flow-based representation to define cell boundaries.<br><br><strong><a href="https://github.com/stardist/stardist">StarDist</a></strong> - Specialised for star-convex object detection, particularly effective for nucleus and cell segmentation in crowded scenes.</p><h4>Pose Estimation and Tracking</h4><p><strong><a href="https://sleap.ai/">SLEAP</a></strong> - Social LEAP Estimates Animal Poses. Designed for tracking multiple animals and their interactions, with support for various CNN backbones. SLEAP has a unique human in the loop (HITL) component that allows users to correct and validate the predictions, drastically reducing the number of labels required and improving the quality of the predictions.<br><br><strong><a href="https://idtracker.ai/">idtracker.ai</a></strong> - Tracks unlimited number of individuals, keeping correct identities throughout the recording. Particularly useful for tracking multiple animals in groups, such as fish.<br><br><strong><a href="http://www.mackenziemathislab.org/deeplabcut">DeepLabCut</a></strong> - Markerless pose estimation for user-defined body parts with high precision. Uses ResNet-based architecture and transfer learning.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="downloading-pre-trained-modles">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Downloading Pre-trained Modles</h3>
+                        <p>When you need a pre-trained model for transfer learning or as a starting point for your own work, there are several ways to download them. Here we&#x27;ll cover the traditional PyTorch Hub approach and then introduce the more modern ecosystem around Hugging Face and TIMM.</p><h4>PyTorch Hub</h4><p>PyTorch Hub is a pre-trained model repository designed to facilitate research reproducibility. It provides a simple API to load models with their pre-trained weights directly from GitHub repositories.<br><br>The basic concept is straightforward: you use <code>torch.hub.load()</code> to download and instantiate a model in a single line of code. The function takes three main arguments:<br><ol class="nested-list"><li>The GitHub repository (in the format <code>owner/repo:branch</code>)</li><br><li>The model name</li><br><li>Whether to use pre-trained weights</li></ol></p><p>Here&#x27;s a simple example loading a ResNet-18 model:</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-40">import torch
+
+# Load a pre-trained ResNet-18 model from PyTorch&#x27;s official repository
+model = torch.hub.load(&#x27;pytorch/vision:v0.10.0&#x27;, &#x27;resnet18&#x27;, pretrained=True)</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-41">print(f&quot;Model loaded: {model.__class__.__name__}&quot;)
+print(f&quot;Number of parameters: {sum(p.numel() for p in model.parameters()):,}&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">Model loaded: ResNet
+Number of parameters: 11,689,512
+</pre></div>
+        </div>
+        <p>While PyTorch Hub is convenient, it has some limitations: the repository structure can be inconsistent across different model sources, and the ecosystem is somewhat fragmented.</p><h4>Hugging Face Hub and TIMM</h4><p>The current approach to downloading pre-trained models centers around <strong>Hugging Face Hub</strong> a pltform for Machine Learning models, and specifically for PyTorch, <strong>TIMM</strong>, a library for computer vision models.<br><br><a href="https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file#introduction"><strong>TIMM</strong></a> provides a consistent, unified API for hundreds of computer vision models. Rather than dealing with different repositories and inconsistent interfaces, TIMM has a single <code>timm.create_model()</code> function for creating a model given a named architecture and can also come with their pre-trained weights (<em>see the example below</em>).<br><br><strong>Hugging Face Hub</strong> has become the de facto standard for sharing and discovering models across all domains. While it started with natural language processing, it now hosts all types of models for every field. Within Hugging Face each model comes complete with with documentation, training details, and usage examples. AS well as version control and lineage tracking, like GitHub.</p><p>Here&#x27;s how you would use TIMM to load a model:</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-42">import timm
+
+import warnings
+warnings.filterwarnings(&quot;ignore&quot;) # ignore warnings
+
+# List available models (filtered for ResNet variants)
+available_models = timm.list_models(&#x27;resnet*&#x27;, pretrained=True)</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-43">print(f&quot;Found {len(available_models)} pre-trained ResNet variants&quot;)
+print(f&quot;Examples: {available_models[:5]}&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">Found 130 pre-trained ResNet variants
+Examples: [&#x27;resnet10t.c3_in1k&#x27;, &#x27;resnet14t.c3_in1k&#x27;, &#x27;resnet18.a1_in1k&#x27;, &#x27;resnet18.a2_in1k&#x27;, &#x27;resnet18.a3_in1k&#x27;]
+</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-44"># Load a pre-trained model
+model = timm.create_model(&#x27;resnet18&#x27;, pretrained=True)
+
+# Get model-specific preprocessing configuration
+data_config = timm.data.resolve_model_data_config(model)
+print(f&quot;\nInput size: {data_config[&#x27;input_size&#x27;]}&quot;)
+print(f&quot;Mean: {data_config[&#x27;mean&#x27;]}&quot;)
+print(f&quot;Std: {data_config[&#x27;std&#x27;]}&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">
+Input size: (3, 224, 224)
+Mean: (0.485, 0.456, 0.406)
+Std: (0.229, 0.224, 0.225)
+</pre></div>
+        </div>
+        <p>Models can also be downloaded directly from the <a href="https://huggingface.co/docs/hub/en/models-downloading">Huggingface Hub</a>, as many users are uploading more tailored models there all the time. However, you will have to be more dilegent with understanding of how the model was trained and its potential pitfalls.</p>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <div class="page-navigation">
+            <a href="./case-study.html" class="nav-button prev">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                Previous
+            </a>
+            <a href="./assignment.html" class="nav-button next">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </a></div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© All materials are copyright scryptIQ 2025</div>
+            <div>Static Notebook - Pre-executed Content</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/main.js"></script>
+    
+    <!-- Initialize syntax highlighting -->
+    <script>
+        // Set page ready flag immediately for PDF generation
+        window.pageReady = true;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>
+    
