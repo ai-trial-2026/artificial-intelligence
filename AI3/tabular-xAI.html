@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- MathJax for mathematical notation -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
+    <!-- Syntax Highlighting with highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/android-chrome-512x512.png">
+    
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href=../assets/colours.css>
+    <link rel="stylesheet" href="../assets/shared-styles.css">
+    <link rel="stylesheet" href="../assets/nav-bar.css">
+    <link rel="stylesheet" href="../assets/module_card.css">
+    <link rel="stylesheet" href="../assets/learning_outcomes.css">
+    <link rel="stylesheet" href="../assets/learning_lists.css">
+    <link rel="stylesheet" href="../assets/box_styles.css">
+    <link rel="stylesheet" href="../assets/code_styles.css">
+    <link rel="stylesheet" href="../assets/static_output.css">
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2D - AI3 - Tabular xAI</title>
+        
+</head>
+<body>
+    
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <a href="../homepage.html" style="text-decoration: none; display: inline-block;">
+                <img src="../assets/scryptIQ_logo_dark.png" alt="scryptIQ Logo" class="sidebar-logo">
+            </a>
+        </div>
+
+        <h3>Content</h3>
+        <ul>
+            <li><a href="./introduction.html" class="">Introduction</a></li><li><a href="./what-is-xAI.html">Explaining AI output</a></li><li><a href="./feature-importance.html">Feature Importance</a></li>
+            <li>
+                <div class="nav-toggle active" data-target="expandable-section-3">
+                    Tabular xAI
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <ul class="nested-nav expanded" id="expandable-section-3"><li><a href="#introduction">Introduction</a></li><li><a href="#setup">Setup</a></li><li><a href="#neural-network-model">Neural Network Model</a></li><li><a href="#feature-ablation">Feature Ablation</a></li><li><a href="#intergrated-gradients">Intergrated Gradients</a></li><li><a href="#other-methods">Other Methods</a></li><li><a href="#summary">Summary</a></li>
+                </ul>
+            </li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
+        </ul>
+
+        <h3 class="collapsible-header collapsed">
+            Resources
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+                <li><a href="./glossary.html">Glossary</a></li><li><a href="./downloads.html">Downloads</a></li><li><a href="../HB/introduction.html">Handbook</a></li>
+            </ul>
+        </div>
+
+        <h3 class="collapsible-header collapsed">
+            Previous Modules
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+            <li><a href="../AI1/introduction.html">AI1</a></li>
+            <li><a href="../AI2/introduction.html">AI2</a></li>
+        </ul>
+        </div>
+
+        <h3>
+            <li><a href="./report-issue.html">Report an Issue</a></li>
+        </h3>
+    </div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle">❮</button>
+    
+    <!-- Main Content Area -->
+    <div id="main-content" class="main-content">
+        <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <h1 class="page-title">Artificial Intelligence 3</h1>
+            <div class="nav-actions">
+                <a href="../homepage.html" class="text-button" title="Materials homepage">
+                    Homepage
+                </a>
+                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    Learn to Discover
+                </a>
+            </div>
+        </div>
+
+        
+            <div class="module-card" id="introduction">
+                <div class="module-header">
+                    Tabular xAI <span class="module-tag">AI3</span>
+                </div>
+                <div class="module-body">
+                    <h3>Learning Objectives</h3>
+                    <div class="learning-outcomes">
+                        <div class="outcome-item">
+                    <span class="outcome-number">1</span>
+                    <span class="outcome-text">How to use feature ablation with tabular data</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">2</span>
+                    <span class="outcome-text">How to use intergrated gradients to score a features importance</span>
+                </div>
+                    </div>
+                    <h3>Introduction</h3>
+                    <p>The previous section (and much of this module) focussed on image data, however, the concepts are transferable to tabular data. In this section we will explore how features can be removed to help explain their attribution, as well as how importance can be inferrred by intergrating the gradients of an input given a zero&#x27;d baseline.</p>
+                </div>
+            </div>
+            
+            <div class="module-card" id="setup">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Setup</h3>
+                        <h4>Data</h4><p>The dataset used in this demonstration is the Wisconsin <strong>Breast Cancer</strong> Diagnostic Database, publicly available from the <a href="https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic">University of California Irvine (UCI) Machine Learning Repository</a>. It consists of characteristics of cell nuclei taken from breast masses which were sampled using fine-needle aspiration (FNA), a common diagnostic procedure in oncology.<br><br>The features are observable characteristics of the cells in the images - for example, radius, concavity, and texture. An example of one of the digitised images from an FNA sample is given below.</p><p><img src="./images/fna_pic.png" alt="FNA picture" class="notebook-image"></p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-30"># Import the modules required:
+import torch
+import torch.nn as nn
+
+import matplotlib
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
+from scipy import stats
+import pandas as pd
+import numpy as np
+
+# fix the numpy and torch seeds for reproducibility:
+SEED = 999
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed(SEED)</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-31">data = pd.read_csv(&quot;data/breast_cancer.csv&quot;)
+
+# Change the diagnosis column to binary values
+label_dict = {&#x27;M&#x27;: 1, &#x27;B&#x27;: 0}
+data[&#x27;Diagnosis&#x27;] = data[&#x27;Diagnosis&#x27;].map(label_dict)
+class_labels = [&#x27;Benign&#x27;, &#x27;Malignant&#x27;]
+
+print(data.head(5))
+
+# setup oour test train split
+X = data.drop(&quot;Diagnosis&quot;, axis=1)
+feature_names = X.columns.tolist() # get feature names
+X = X.to_numpy()
+y = data[&quot;Diagnosis&quot;].to_numpy() 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+
+# rescale the data
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+n_features = X_train.shape[1]
+n_classes = len(label_dict)
+
+print(&quot; &quot;)
+print(f&quot;Number of features: {n_features}&quot;)
+print(f&quot;Number of classes: {n_classes}&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+FileNotFoundError                         Traceback (most recent call last)
+Cell In[2], line 3
+      1 # FIXED WITH OUTPUT
+----&gt; 3 data = pd.read_csv(&quot;data/breast_cancer.csv&quot;)
+      5 # Change the diagnosis column to binary values
+      6 label_dict = {&#x27;M&#x27;: 1, &#x27;B&#x27;: 0}
+
+File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:873, in read_csv(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, skip_blank_lines, parse_dates, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, low_memory, memory_map, float_precision, storage_options, dtype_backend)
+    861 kwds_defaults = _refine_defaults_read(
+    862     dialect,
+    863     delimiter,
+   (...)    869     dtype_backend=dtype_backend,
+    870 )
+    871 kwds.update(kwds_defaults)
+--&gt; 873 return _read(filepath_or_buffer, kwds)
+
+File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:300, in _read(filepath_or_buffer, kwds)
+    297 _validate_names(kwds.get(&quot;names&quot;, None))
+    299 # Create the parser.
+--&gt; 300 parser = TextFileReader(filepath_or_buffer, **kwds)
+    302 if chunksize or iterator:
+    303     return parser
+
+File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:1645, in TextFileReader.__init__(self, f, engine, **kwds)
+   1642     self.options[&quot;has_index_names&quot;] = kwds[&quot;has_index_names&quot;]
+   1644 self.handles: IOHandles | None = None
+-&gt; 1645 self._engine = self._make_engine(f, self.engine)
+
+File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:1904, in TextFileReader._make_engine(self, f, engine)
+   1902     if &quot;b&quot; not in mode:
+   1903         mode += &quot;b&quot;
+-&gt; 1904 self.handles = get_handle(
+   1905     f,
+   1906     mode,
+   1907     encoding=self.options.get(&quot;encoding&quot;, None),
+   1908     compression=self.options.get(&quot;compression&quot;, None),
+   1909     memory_map=self.options.get(&quot;memory_map&quot;, False),
+   1910     is_text=is_text,
+   1911     errors=self.options.get(&quot;encoding_errors&quot;, &quot;strict&quot;),
+   1912     storage_options=self.options.get(&quot;storage_options&quot;, None),
+   1913 )
+   1914 assert self.handles is not None
+   1915 f = self.handles.handle
+
+File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python3.12/site-packages/pandas/io/common.py:926, in get_handle(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)
+    921 elif isinstance(handle, str):
+    922     # Check whether the filename is to be opened in binary mode.
+    923     # Binary mode does not support &#x27;encoding&#x27; and &#x27;newline&#x27;.
+    924     if ioargs.encoding and &quot;b&quot; not in ioargs.mode:
+    925         # Encoding
+--&gt; 926         handle = open(
+    927             handle,
+    928             ioargs.mode,
+    929             encoding=ioargs.encoding,
+    930             errors=errors,
+    931             newline=&quot;&quot;,
+    932         )
+    933     else:
+    934         # Binary mode
+    935         handle = open(handle, ioargs.mode)
+
+FileNotFoundError: [Errno 2] No such file or directory: &#x27;data/breast_cancer.csv&#x27;</pre></div>
+        </div>
+        <p>The dataset is actually quite small, with only 569 samples. This would usually not be a good candidate for deep learning, but we will use it to demonstrate the process as it is quick to train and has clear, defined features.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="neural-network-model">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Neural Network Model</h3>
+                        <p>We will only use a simple neural netwrod with <strong>one</strong> hidden layer and <strong>sigmoid</strong> activation functions per each layer.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-32">class simpleNN(nn.Module):
+    def __init__(self, in_features):
+        super().__init__()
+        self.linear1 = nn.Linear(in_features, 20)
+        self.sigmoid1 = nn.Sigmoid()
+        self.linear2 = nn.Linear(20, 12)
+        self.sigmoid2 = nn.Sigmoid()
+        self.linear3 = nn.Linear(12, 2) # binary classification
+        self.softmax = nn.Softmax(dim=1)
+
+    def forward(self, x):
+        lin1_out = self.linear1(x)
+        sigmoid_out1 = self.sigmoid1(lin1_out)
+        sigmoid_out2 = self.sigmoid2(self.linear2(sigmoid_out1))
+        return self.softmax(self.linear3(sigmoid_out2))</code></pre>
+            </div>
+            
+        </div>
+        <h4>Training</h4><p>As the dataset is small and the neurl netwrok simple we can near intantly train the model over 50 epochs, as it converges very quickly.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-33">model = simpleNN(n_features)
+
+criterion = nn.CrossEntropyLoss()
+optimiser = torch.optim.Adam(model.parameters(), lr=0.1) # adam optimiser
+
+num_epochs = 50
+
+input_tensor = torch.from_numpy(X_train).type(torch.FloatTensor)
+label_tensor = torch.from_numpy(y_train)
+
+for epoch in range(num_epochs):    
+
+    output = model(input_tensor)
+    loss = criterion(output, label_tensor)
+    
+    optimiser.zero_grad()
+    loss.backward()
+    optimiser.step()
+
+    if epoch % 10 == 0:
+        print (f&#x27;Epoch {epoch+1}/{num_epochs} =&gt; Loss: {loss.item():.2f}&#x27;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[4], line 3
+      1 # FIXED WITH OUTPUT
+----&gt; 3 model = simpleNN(n_features)
+      5 criterion = nn.CrossEntropyLoss()
+      6 optimiser = torch.optim.Adam(model.parameters(), lr=0.1) # adam optimiser
+
+NameError: name &#x27;n_features&#x27; is not defined</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-34">out_probs = model(input_tensor).detach().numpy()
+out_classes = np.argmax(out_probs, axis=1)
+print(&quot;Train Accuracy:&quot;, sum(out_classes == y_train) / len(y_train))
+
+test_input_tensor = torch.from_numpy(X_test).type(torch.FloatTensor)
+out_probs = model(test_input_tensor).detach().numpy()
+out_classes = np.argmax(out_probs, axis=1)
+print(&quot;Test Accuracy:&quot;, sum(out_classes == y_test) / len(y_test))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[5], line 3
+      1 # FIXED WITH OUTPUT
+----&gt; 3 out_probs = model(input_tensor).detach().numpy()
+      4 out_classes = np.argmax(out_probs, axis=1)
+      5 print(&quot;Train Accuracy:&quot;, sum(out_classes == y_train) / len(y_train))
+
+NameError: name &#x27;model&#x27; is not defined</pre></div>
+        </div>
+        <p>Our model is already extremely accurate on both the training and validation datasets. It is therefore a good candidate for understanding how it predicts each of the classes.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="feature-ablation">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Feature Ablation</h3>
+                        <p>The concept of ablating parts of the information in the test dataset can be carried over to tabular data as well. This time, we can use the <strong>FeatureAblation</strong> class to remove features rather than pixels.</p>
+        <div class="info-box tip-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                TIP
+            </div>
+            <div class="box-content">
+                <p>As a default, the ablation class will set the ablated feature to 0. However, it can be modified to be more specific. For example, using the mean of the feature from the training data is a common approach.<br><br><pre class="markdown-code-block"><code>baseline_mean = torch.tensor(X_train.mean(axis=0)).unsqueeze(0)
+
+attr = ablation.attribute(
+    sample,
+    baseline=baseline_mean,
+    target=predicted_class,
+)</code></pre></p>
+            </div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-35">from captum.attr import FeatureAblation</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-36"># Get ablation class and set model to evaluation mode
+ablation = FeatureAblation(model)
+model.eval() # set model to evaluation mode
+
+# Get a single sample and its predicted class
+sample = test_input_tensor[2:3]
+predicted_class = model(sample).argmax().item()
+
+# Calculate importances
+attr = ablation.attribute(
+    sample,
+    target=predicted_class,
+)
+
+plt.figure(figsize=(10, 6))
+plt.barh(feature_names, attr[0])
+plt.xlabel(&#x27;Attribution Score&#x27;)
+plt.tight_layout()
+plt.show()</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[7], line 4
+      1 # FIXED WITH OUTPUT
+      2 
+      3 # Get ablation class and set model to evaluation mode
+----&gt; 4 ablation = FeatureAblation(model)
+      5 model.eval() # set model to evaluation mode
+      7 # Get a single sample and its predicted class
+
+NameError: name &#x27;model&#x27; is not defined</pre></div>
+        </div>
+        <p>Only <strong>texture3</strong> and <strong>radius2</strong> have a positive attribution score for this sample, the remaining are <strong>zero</strong> (which means they have no impact on the prediction). However, looking at the scale these values are very small, indicating that they may also have a minimal impact on the prediction. Due to the variation of just one sample, it is often best to get a more stable attribution by using multiple samples.<br><br>Addtionally, we can seperate out the attributions for the positive class (malignant) and the negative class (benign) to see which features are most important for each class.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-37"># Collect attributions
+all_attributions = {0: [], 1: []}
+
+for class_idx in range(n_classes):
+    
+    # Get samples from this class
+    class_mask = y_test == class_idx
+    class_samples = X_test[class_mask]
+    
+    for sample in class_samples:
+        sample_tensor = torch.tensor(sample, dtype=torch.float32).unsqueeze(0)
+        attr = ablation.attribute(sample_tensor, target=class_idx)
+        all_attributions[class_idx].append(attr.squeeze().cpu().numpy())
+
+# Average attributions per class
+avg_attributions_malignant = np.mean(all_attributions[1], axis=0)
+avg_attributions_benign = np.mean(all_attributions[0], axis=0)
+# Find features that are important for one class but not the other
+diff_importance = avg_attributions_malignant - avg_attributions_benign
+
+plt.figure(figsize=(10, 6)) 
+colors = [&#x27;red&#x27; if x &lt; 0 else &#x27;green&#x27; for x in diff_importance]
+plt.barh(feature_names, diff_importance, color=colors)
+plt.xlabel(&#x27;Importance Difference (Malignant - Benign)&#x27;)
+plt.axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;) # plot dashed line at 0
+plt.tight_layout()
+plt.show()</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[8], line 6
+      1 # FIXED WITH OUTPUT
+      2 
+      3 # Collect attributions
+      4 all_attributions = {0: [], 1: []}
+----&gt; 6 for class_idx in range(n_classes):
+      7 
+      8     # Get samples from this class
+      9     class_mask = y_test == class_idx
+     10     class_samples = X_test[class_mask]
+
+NameError: name &#x27;n_classes&#x27; is not defined</pre></div>
+        </div>
+        <p>Finding the average importance of each feature gives a much richer view of what features are most important to the model. According to this representation, most of the features are postively correlated with the target variable, malignant. <strong>Symmetry3</strong> has the highest score and would be a good candidate for further breaking down what range of values are most important within that feature.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="intergrated-gradients">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Intergrated Gradients</h3>
+                        <p>An alternative to feature ablation is to calculate how much each feature contributes through their integrated gradients. This method measures how much each feature contributes to the final prediction by computing gradients along a path from a baseline (e.g., zeros or average values) to the actual input.<br><br>Rather than simply removing features, Integrated Gradients creates many intermediate points between the baseline and your input, calculates how sensitive the model is to each feature at each point, and then averages these sensitivities.<br><br>This gradient-based approach is often more efficient than ablation for high-dimensional data.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-38">from captum.attr import IntegratedGradients</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-39">ig = IntegratedGradients(model)
+
+test_input_tensor.requires_grad_()
+
+attr, delta = ig.attribute(test_input_tensor, 
+                            target=1,                      # set the target class to 1 (malignant)
+                            return_convergence_delta=True
+                            )
+
+attr = attr.detach().numpy()
+
+attr_means = np.mean(attr, axis=0)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[10], line 3
+      1 # FIXED WITH OUTPUT
+----&gt; 3 ig = IntegratedGradients(model)
+      5 test_input_tensor.requires_grad_()
+      7 attr, delta = ig.attribute(test_input_tensor, 
+      8                             target=1,                      # set the target class to 1 (malignant)
+      9                             return_convergence_delta=True
+     10                             )
+
+NameError: name &#x27;model&#x27; is not defined</pre></div>
+        </div>
+        <p>By setting the target to 1, we are asking for features that are most important (positve attribution) to predicting the malignant class or (if negative) have the opposite effect.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-40">def visualise_importances(feature_names, importances, title=&quot;&quot;, xaxis_title=&quot;Feature Attribution&quot;):
+    &quot;&quot;&quot;
+        Plotting function for feature importances
+    &quot;&quot;&quot;    
+
+    plt.figure(figsize=(10, 6)) 
+
+    colors = [&#x27;red&#x27; if x &lt; 0 else &#x27;green&#x27; for x in importances]
+    plt.barh(feature_names, importances, color=colors)
+    plt.xlabel(xaxis_title)
+    plt.axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;) # plot dashed line at 0
+    plt.tight_layout()
+    plt.show()
+
+visualise_importances(feature_names, attr_means)
+
+positive_feature = feature_names[np.argmax(attr_means)]
+all_best = attr[:, np.argmax(attr_means)]
+print(f&quot;Feature most postively attributed to malignancy: {positive_feature}&quot;)
+
+negative_feature = feature_names[np.argmin(attr_means)]
+all_worst = attr[:, np.argmin(attr_means)]
+print(f&quot;Feature most negatively attributed to malignancy: {negative_feature}&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[11], line 17
+     14     plt.tight_layout()
+     15     plt.show()
+---&gt; 17 visualise_importances(feature_names, attr_means)
+     19 positive_feature = feature_names[np.argmax(attr_means)]
+     20 all_best = attr[:, np.argmax(attr_means)]
+
+NameError: name &#x27;feature_names&#x27; is not defined</pre></div>
+        </div>
+        <h4>Distribution of scores</h4><p>Means of scores can often be misleading, especially for feature attributions methods where <strong>zero</strong> indicates no contribtution to the prediciton either positively or negatively. Plotting a histogram of the attributions can give a better sense of the distribution.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-41">fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+
+ax[0].hist(all_best);
+ax[0].set_title(f&quot;Distribution of most positive correlated feature: \n {positive_feature}&quot;);
+
+ax[1].hist(all_worst);
+ax[1].set_title(f&quot;Distribution of most negative correlated feature: \n {negative_feature}&quot;);
+
+fig.tight_layout()
+
+plt.show()</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[12], line 5
+      1 # FIXED WITH OUTPUT
+      3 fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+----&gt; 5 ax[0].hist(all_best);
+      6 ax[0].set_title(f&quot;Distribution of most positive correlated feature: \n {positive_feature}&quot;);
+      8 ax[1].hist(all_worst);
+
+NameError: name &#x27;all_best&#x27; is not defined</pre><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0UAAAFlCAYAAAAktEOqAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjgsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvwVt1zgAAAAlwSFlzAAAPYQAAD2EBqD+naQAAH2FJREFUeJzt3W9sneV5P/DLdvAxqNiEZbGTzDSDjtIWSGhCPEMRovJqCZQuL6Z6UCVZxJ/RZojG2kpCIC6ljTMGKFIxjUhh9EVZ0iJAVROZMq9RRfEUNYklOhIQDTRZVZtkHXZmWpvYz+9FhfszOYYcOz5OfH8+0nmRh/vxuc4t83z19flXkmVZFgAAAIkqneoBAAAAppJSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkreBS9NOf/jSWLl0ac+fOjZKSknjuuec+9Jxdu3bFpz/96cjlcvGxj30snnzyyXGMCgAnkksATFTBpai/vz8WLFgQbW1tJ7X+jTfeiBtuuCGuu+666Orqiq985Stxyy23xPPPP1/wsADwfnIJgIkqybIsG/fJJSXx7LPPxrJly8Zcc9ddd8WOHTviF7/4xcixv/3bv42333472tvbx3vXAHACuQTAeMyY7Dvo7OyMhoaGUccaGxvjK1/5ypjnDAwMxMDAwMi/h4eH47e//W38yZ/8SZSUlEzWqAC8T5ZlcezYsZg7d26Ulk6Pt6HKJYAz22Rk06SXou7u7qiurh51rLq6Ovr6+uJ3v/tdnH322Sec09raGvfdd99kjwbASTp8+HD82Z/92VSPcUrIJYDp4VRm06SXovFYt25dNDc3j/y7t7c3Lrjggjh8+HBUVlZO4WQAaenr64va2to499xzp3qUKSWXAE4fk5FNk16KampqoqenZ9Sxnp6eqKyszPvXuIiIXC4XuVzuhOOVlZXCB2AKTKeXiMklgOnhVGbTpL9AvL6+Pjo6OkYde+GFF6K+vn6y7xoATiCXAHi/gkvR//3f/0VXV1d0dXVFxB8+2rSrqysOHToUEX94icGKFStG1t9+++1x8ODB+OpXvxoHDhyIRx99NL7//e/HmjVrTs0jACBpcgmAiSq4FP385z+PK664Iq644oqIiGhubo4rrrgiNmzYEBERv/nNb0aCKCLiz//8z2PHjh3xwgsvxIIFC+Khhx6K73znO9HY2HiKHgIAKZNLAEzUhL6nqFj6+vqiqqoqent7vXYboIhcf/OzLwBTZzKuwdPjSycAAADGSSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJG1cpamtri/nz50dFRUXU1dXF7t27P3D95s2b4+Mf/3icffbZUVtbG2vWrInf//734xoYAPKRTQCMV8GlaPv27dHc3BwtLS2xd+/eWLBgQTQ2NsZbb72Vd/1TTz0Va9eujZaWlti/f388/vjjsX379rj77rsnPDwARMgmACam4FL08MMPx6233hqrVq2KT37yk7Fly5Y455xz4oknnsi7/qWXXoqrr746brrpppg/f3587nOfixtvvPFD/4IHACdLNgEwEQWVosHBwdizZ080NDT88QeUlkZDQ0N0dnbmPeeqq66KPXv2jATNwYMHY+fOnXH99dePeT8DAwPR19c36gYA+RQjm+QSwPQ2o5DFR48ejaGhoaiurh51vLq6Og4cOJD3nJtuuimOHj0an/nMZyLLsjh+/HjcfvvtH/gShdbW1rjvvvsKGQ2ARBUjm+QSwPQ26Z8+t2vXrti4cWM8+uijsXfv3njmmWdix44dcf/99495zrp166K3t3fkdvjw4ckeE4CEFJpNcglgeivomaJZs2ZFWVlZ9PT0jDre09MTNTU1ec+59957Y/ny5XHLLbdERMRll10W/f39cdttt8X69eujtPTEXpbL5SKXyxUyGgCJKkY2ySWA6a2gZ4rKy8tj0aJF0dHRMXJseHg4Ojo6or6+Pu8577zzzgnhUlZWFhERWZYVOi8AjCKbAJiogp4piohobm6OlStXxuLFi2PJkiWxefPm6O/vj1WrVkVExIoVK2LevHnR2toaERFLly6Nhx9+OK644oqoq6uL119/Pe69995YunTpSAABwETIJgAmouBS1NTUFEeOHIkNGzZEd3d3LFy4MNrb20fe4Hro0KFRf3275557oqSkJO6555749a9/HX/6p38aS5cujW9+85un7lEAkDTZBMBElGRnwOsE+vr6oqqqKnp7e6OysnKqxwFIhutvfvYFYOpMxjV40j99DgAA4HSmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAEkbVylqa2uL+fPnR0VFRdTV1cXu3bs/cP3bb78dq1evjjlz5kQul4uLL744du7cOa6BASAf2QTAeM0o9ITt27dHc3NzbNmyJerq6mLz5s3R2NgYr776asyePfuE9YODg/FXf/VXMXv27Hj66adj3rx58atf/SrOO++8UzE/AMgmACakJMuyrJAT6urq4sorr4xHHnkkIiKGh4ejtrY27rjjjli7du0J67ds2RL/8i//EgcOHIizzjprXEP29fVFVVVV9Pb2RmVl5bh+BgCFO1Ouv8XOpjNlXwCmo8m4Bhf08rnBwcHYs2dPNDQ0/PEHlJZGQ0NDdHZ25j3nhz/8YdTX18fq1aujuro6Lr300ti4cWMMDQ2NeT8DAwPR19c36gYA+RQjm+QSwPRWUCk6evRoDA0NRXV19ajj1dXV0d3dnfecgwcPxtNPPx1DQ0Oxc+fOuPfee+Ohhx6Kb3zjG2PeT2tra1RVVY3camtrCxkTgIQUI5vkEsD0NumfPjc8PByzZ8+Oxx57LBYtWhRNTU2xfv362LJly5jnrFu3Lnp7e0duhw8fnuwxAUhIodkklwCmt4I+aGHWrFlRVlYWPT09o4739PRETU1N3nPmzJkTZ511VpSVlY0c+8QnPhHd3d0xODgY5eXlJ5yTy+Uil8sVMhoAiSpGNsklgOmtoGeKysvLY9GiRdHR0TFybHh4ODo6OqK+vj7vOVdffXW8/vrrMTw8PHLstddeizlz5uQtRABQCNkEwEQV/PK55ubm2Lp1a3z3u9+N/fv3x5e+9KXo7++PVatWRUTEihUrYt26dSPrv/SlL8Vvf/vbuPPOO+O1116LHTt2xMaNG2P16tWn7lEAkDTZBMBEFPw9RU1NTXHkyJHYsGFDdHd3x8KFC6O9vX3kDa6HDh2K0tI/dq3a2tp4/vnnY82aNXH55ZfHvHnz4s4774y77rrr1D0KAJImmwCYiIK/p2gq+D4IgKnh+puffQGYOlP+PUUAAADTjVIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSNq5S1NbWFvPnz4+Kioqoq6uL3bt3n9R527Zti5KSkli2bNl47hYAxiSbABivgkvR9u3bo7m5OVpaWmLv3r2xYMGCaGxsjLfeeusDz3vzzTfjH//xH+Oaa64Z97AAkI9sAmAiCi5FDz/8cNx6662xatWq+OQnPxlbtmyJc845J5544okxzxkaGoovfvGLcd9998WFF144oYEB4P1kEwATUVApGhwcjD179kRDQ8Mff0BpaTQ0NERnZ+eY533961+P2bNnx80333xS9zMwMBB9fX2jbgCQTzGySS4BTG8FlaKjR4/G0NBQVFdXjzpeXV0d3d3dec958cUX4/HHH4+tW7ee9P20trZGVVXVyK22traQMQFISDGySS4BTG+T+ulzx44di+XLl8fWrVtj1qxZJ33eunXrore3d+R2+PDhSZwSgJSMJ5vkEsD0NqOQxbNmzYqysrLo6ekZdbynpydqampOWP/LX/4y3nzzzVi6dOnIseHh4T/c8YwZ8eqrr8ZFF110wnm5XC5yuVwhowGQqGJkk1wCmN4KeqaovLw8Fi1aFB0dHSPHhoeHo6OjI+rr609Yf8kll8TLL78cXV1dI7fPf/7zcd1110VXV5eXHwAwYbIJgIkq6JmiiIjm5uZYuXJlLF68OJYsWRKbN2+O/v7+WLVqVURErFixIubNmxetra1RUVERl1566ajzzzvvvIiIE44DwHjJJgAmouBS1NTUFEeOHIkNGzZEd3d3LFy4MNrb20fe4Hro0KEoLZ3UtyoBwCiyCYCJKMmyLJvqIT5MX19fVFVVRW9vb1RWVk71OADJcP3Nz74ATJ3JuAb7sxkAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEjauEpRW1tbzJ8/PyoqKqKuri5279495tqtW7fGNddcEzNnzoyZM2dGQ0PDB64HgPGQTQCMV8GlaPv27dHc3BwtLS2xd+/eWLBgQTQ2NsZbb72Vd/2uXbvixhtvjJ/85CfR2dkZtbW18bnPfS5+/etfT3h4AIiQTQBMTEmWZVkhJ9TV1cWVV14ZjzzySEREDA8PR21tbdxxxx2xdu3aDz1/aGgoZs6cGY888kisWLHipO6zr68vqqqqore3NyorKwsZF4AJOFOuv8XOpjNlXwCmo8m4Bhf0TNHg4GDs2bMnGhoa/vgDSkujoaEhOjs7T+pnvPPOO/Huu+/G+eefX9ikAJCHbAJgomYUsvjo0aMxNDQU1dXVo45XV1fHgQMHTupn3HXXXTF37txR4fV+AwMDMTAwMPLvvr6+QsYEICHFyCa5BDC9FfXT5zZt2hTbtm2LZ599NioqKsZc19raGlVVVSO32traIk4JQEpOJpvkEsD0VlApmjVrVpSVlUVPT8+o4z09PVFTU/OB5z744IOxadOm+PGPfxyXX375B65dt25d9Pb2jtwOHz5cyJgAJKQY2SSXAKa3gkpReXl5LFq0KDo6OkaODQ8PR0dHR9TX14953gMPPBD3339/tLe3x+LFiz/0fnK5XFRWVo66AUA+xcgmuQQwvRX0nqKIiObm5li5cmUsXrw4lixZEps3b47+/v5YtWpVRESsWLEi5s2bF62trRER8c///M+xYcOGeOqpp2L+/PnR3d0dEREf+chH4iMf+cgpfCgApEo2ATARBZeipqamOHLkSGzYsCG6u7tj4cKF0d7ePvIG10OHDkVp6R+fgPr2t78dg4OD8Td/8zejfk5LS0t87Wtfm9j0ABCyCYCJKfh7iqaC74MAmBquv/nZF4CpM+XfUwQAADDdKEUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKQpRQAAQNKUIgAAIGlKEQAAkDSlCAAASJpSBAAAJE0pAgAAkqYUAQAASVOKAACApClFAABA0pQiAAAgaUoRAACQNKUIAABImlIEAAAkTSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBp4ypFbW1tMX/+/KioqIi6urrYvXv3B67/wQ9+EJdccklUVFTEZZddFjt37hzXsAAwFtkEwHgVXIq2b98ezc3N0dLSEnv37o0FCxZEY2NjvPXWW3nXv/TSS3HjjTfGzTffHPv27Ytly5bFsmXL4he/+MWEhweACNkEwMSUZFmWFXJCXV1dXHnllfHII49ERMTw8HDU1tbGHXfcEWvXrj1hfVNTU/T398ePfvSjkWN/+Zd/GQsXLowtW7ac1H329fVFVVVV9Pb2RmVlZSHjAjABZ8r1t9jZdKbsC8B0NBnX4BmFLB4cHIw9e/bEunXrRo6VlpZGQ0NDdHZ25j2ns7MzmpubRx1rbGyM5557bsz7GRgYiIGBgZF/9/b2RsQfNgCA4nnvulvg38+KqhjZJJcATh+TkU0FlaKjR4/G0NBQVFdXjzpeXV0dBw4cyHtOd3d33vXd3d1j3k9ra2vcd999Jxyvra0tZFwATpH/+Z//iaqqqqkeI69iZJNcAjj9nMpsKqgUFcu6detG/QXv7bffjo9+9KNx6NCh0zaUp0JfX1/U1tbG4cOHvXzjfexNfvZlbPYmv97e3rjgggvi/PPPn+pRppRcOnn+X8rPvozN3uRnX8Y2GdlUUCmaNWtWlJWVRU9Pz6jjPT09UVNTk/ecmpqagtZHRORyucjlciccr6qq8kuRR2VlpX0Zg73Jz76Mzd7kV1p6+n6DQzGySS4Vzv9L+dmXsdmb/OzL2E5lNhX0k8rLy2PRokXR0dExcmx4eDg6Ojqivr4+7zn19fWj1kdEvPDCC2OuB4BCyCYAJqrgl881NzfHypUrY/HixbFkyZLYvHlz9Pf3x6pVqyIiYsWKFTFv3rxobW2NiIg777wzrr322njooYfihhtuiG3btsXPf/7zeOyxx07tIwEgWbIJgIkouBQ1NTXFkSNHYsOGDdHd3R0LFy6M9vb2kTesHjp0aNRTWVdddVU89dRTcc8998Tdd98df/EXfxHPPfdcXHrppSd9n7lcLlpaWvK+dCFl9mVs9iY/+zI2e5PfmbIvxc6mM2VfpoK9yc++jM3e5GdfxjYZe1Pw9xQBAABMJ6fvO2cBAACKQCkCAACSphQBAABJU4oAAICknTalqK2tLebPnx8VFRVRV1cXu3fv/sD1P/jBD+KSSy6JioqKuOyyy2Lnzp1FmrS4CtmXrVu3xjXXXBMzZ86MmTNnRkNDw4fu45ms0N+Z92zbti1KSkpi2bJlkzvgFCl0X95+++1YvXp1zJkzJ3K5XFx88cXT8v+nQvdl8+bN8fGPfzzOPvvsqK2tjTVr1sTvf//7Ik1bPD/96U9j6dKlMXfu3CgpKYnnnnvuQ8/ZtWtXfPrTn45cLhcf+9jH4sknn5z0OaeCXBqbbMpPLo1NNuUnm040ZbmUnQa2bduWlZeXZ0888UT2X//1X9mtt96anXfeeVlPT0/e9T/72c+ysrKy7IEHHsheeeWV7J577snOOuus7OWXXy7y5JOr0H256aabsra2tmzfvn3Z/v37s7/7u7/Lqqqqsv/+7/8u8uSTr9C9ec8bb7yRzZs3L7vmmmuyv/7rvy7OsEVU6L4MDAxkixcvzq6//vrsxRdfzN54441s165dWVdXV5Enn1yF7sv3vve9LJfLZd/73veyN954I3v++eezOXPmZGvWrCny5JNv586d2fr167Nnnnkmi4js2Wef/cD1Bw8ezM4555ysubk5e+WVV7JvfetbWVlZWdbe3l6cgYtELo1NNuUnl8Ymm/KTTflNVS6dFqVoyZIl2erVq0f+PTQ0lM2dOzdrbW3Nu/4LX/hCdsMNN4w6VldXl/393//9pM5ZbIXuy/sdP348O/fcc7Pvfve7kzXilBnP3hw/fjy76qqrsu985zvZypUrp2X4FLov3/72t7MLL7wwGxwcLNaIU6LQfVm9enX22c9+dtSx5ubm7Oqrr57UOafayYTPV7/61exTn/rUqGNNTU1ZY2PjJE5WfHJpbLIpP7k0NtmUn2z6cMXMpSl/+dzg4GDs2bMnGhoaRo6VlpZGQ0NDdHZ25j2ns7Nz1PqIiMbGxjHXn4nGsy/v984778S7774b559//mSNOSXGuzdf//rXY/bs2XHzzTcXY8yiG8++/PCHP4z6+vpYvXp1VFdXx6WXXhobN26MoaGhYo096cazL1dddVXs2bNn5GUMBw8ejJ07d8b1119flJlPZ66/6eZShGwai1wam2zKTzadOqfq+jvjVA41HkePHo2hoaGRbx1/T3V1dRw4cCDvOd3d3XnXd3d3T9qcxTaefXm/u+66K+bOnXvCL8qZbjx78+KLL8bjjz8eXV1dRZhwaoxnXw4ePBj/8R//EV/84hdj586d8frrr8eXv/zlePfdd6OlpaUYY0+68ezLTTfdFEePHo3PfOYzkWVZHD9+PG6//fa4++67izHyaW2s629fX1/87ne/i7PPPnuKJjt15NLYZFN+cmlssik/2XTqnKpcmvJnipgcmzZtim3btsWzzz4bFRUVUz3OlDp27FgsX748tm7dGrNmzZrqcU4rw8PDMXv27Hjsscdi0aJF0dTUFOvXr48tW7ZM9WhTateuXbFx48Z49NFHY+/evfHMM8/Ejh074v7775/q0eCMJpv+QC59MNmUn2yaXFP+TNGsWbOirKwsenp6Rh3v6emJmpqavOfU1NQUtP5MNJ59ec+DDz4YmzZtin//93+Pyy+/fDLHnBKF7s0vf/nLePPNN2Pp0qUjx4aHhyMiYsaMGfHqq6/GRRddNLlDF8F4fmfmzJkTZ511VpSVlY0c+8QnPhHd3d0xODgY5eXlkzpzMYxnX+69995Yvnx53HLLLRERcdlll0V/f3/cdtttsX79+igtTffvSWNdfysrK6fFs0QRcumDyKb85NLYZFN+sunUOVW5NOW7V15eHosWLYqOjo6RY8PDw9HR0RH19fV5z6mvrx+1PiLihRdeGHP9mWg8+xIR8cADD8T9998f7e3tsXjx4mKMWnSF7s0ll1wSL7/8cnR1dY3cPv/5z8d1110XXV1dUVtbW8zxJ814fmeuvvrqeP3110fCOCLitddeizlz5kyL0IkY37688847J4TLe+H8h/d9psv1N91cipBNY5FLY5NN+cmmU+eUXX8L+liGSbJt27Ysl8tlTz75ZPbKK69kt912W3beeedl3d3dWZZl2fLly7O1a9eOrP/Zz36WzZgxI3vwwQez/fv3Zy0tLdPyo08L3ZdNmzZl5eXl2dNPP5395je/GbkdO3Zsqh7CpCl0b95vun7KT6H7cujQoezcc8/N/uEf/iF79dVXsx/96EfZ7Nmzs2984xtT9RAmRaH70tLSkp177rnZv/3bv2UHDx7MfvzjH2cXXXRR9oUvfGGqHsKkOXbsWLZv375s3759WURkDz/8cLZv377sV7/6VZZlWbZ27dps+fLlI+vf++jTf/qnf8r279+ftbW1TduP5JZL+cmm/OTS2GRTfrIpv6nKpdOiFGVZln3rW9/KLrjggqy8vDxbsmRJ9p//+Z8j/+3aa6/NVq5cOWr997///eziiy/OysvLs0996lPZjh07ijxxcRSyLx/96EeziDjh1tLSUvzBi6DQ35n/33QOn0L35aWXXsrq6uqyXC6XXXjhhdk3v/nN7Pjx40WeevIVsi/vvvtu9rWvfS276KKLsoqKiqy2tjb78pe/nP3v//5v8QefZD/5yU/yXjfe24+VK1dm11577QnnLFy4MCsvL88uvPDC7F//9V+LPncxyKWxyab85NLYZFN+sulEU5VLJVmW8PNtAABA8qb8PUUAAABTSSkCAACSphQBAABJU4oAAICkKUUAAEDSlCIAACBpShEAAJA0pQgAAEiaUgQAACRNKQIAAJKmFAEAAElTigAAgKT9P1K9zEgioKnEAAAAAElFTkSuQmCC" class="output-image" width="837" height="357" /></div>
+        </div>
+        <p>Both distributions for the most positive and negative predictions are centered around 0 as most samples have a feature attribution score of <code>0</code>. This indicates that in the majority of cases, these features do not contribute much at all. This could be likely for all features.<br><br>However, there are still the outliers where the feature is very influencial. To see when this is occuring we can bin the values in te feature and plot the average attribution at differing values.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-42"># Plot the scores 
+best_positive_idx = np.argmax(attr_means)
+best_negative_idx = np.argmin(attr_means)
+
+bin_means, bin_edges, _ = stats.binned_statistic(X_test[:,best_positive_idx], attr[:,best_positive_idx], statistic=&#x27;mean&#x27;, bins=6) # change values into bins
+bin_count, _, _ = stats.binned_statistic(X_test[:,best_positive_idx], attr[:,best_positive_idx], statistic=&#x27;count&#x27;, bins=6) # get the cound of each bin 
+
+bin_means_neg, bin_edges_neg, _ = stats.binned_statistic(X_test[:,best_negative_idx], attr[:,best_negative_idx], statistic=&#x27;mean&#x27;, bins=6) # change values into bins
+bin_count_neg, _, _ = stats.binned_statistic(X_test[:,best_negative_idx], attr[:,best_negative_idx], statistic=&#x27;count&#x27;, bins=6) # get the cound of each bin 
+
+bin_width = (bin_edges[1] - bin_edges[0])
+bin_centers = bin_edges[1:] - bin_width/2
+
+bin_width_neg = (bin_edges_neg[1] - bin_edges_neg[0])
+bin_centers_neg = bin_edges_neg[1:] - bin_width_neg/2
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+ax[0].scatter(bin_centers, bin_means, s=bin_count) # change the size given the coutn
+ax[0].set_ylabel(&quot;Average Attribution&quot;);
+ax[0].set_title(f&quot;Binned attribution for positively correlated feature \n {positive_feature}&quot;);
+
+
+ax[1].scatter(bin_centers_neg, bin_means_neg, s=bin_count_neg) # change the size given the coutn
+ax[1].set_ylabel(&quot;Average Attribution&quot;);
+ax[1].set_title(f&quot;Binned attribution for negatively correlated feature \n {negative_feature}&quot;);
+
+plt.show()</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[13], line 4
+      1 # FIXED WITH OUTPUT
+      2 
+      3 # Plot the scores 
+----&gt; 4 best_positive_idx = np.argmax(attr_means)
+      5 best_negative_idx = np.argmin(attr_means)
+      7 bin_means, bin_edges, _ = stats.binned_statistic(X_test[:,best_positive_idx], attr[:,best_positive_idx], statistic=&#x27;mean&#x27;, bins=6) # change values into bins
+
+NameError: name &#x27;attr_means&#x27; is not defined</pre></div>
+        </div>
+        <p>Breaking the scores down per bins of values reveals information about how the data contributes to the prediction. For the positivly correleated feature, <strong>concavity3</strong>, the average attribution rises as concavity3 increases, indicating that higher values of concavity3 contribute to higher predictions. Values over <strong>2</strong> are extemely more perdictive of a malignant diagnosis.<br><br>For <strong>compactness2</strong> the average attrbution stays approximately the same until the value rises to <code><strong>5</strong></code>, when it jumps to a score of <code><strong>-5</strong></code>.</p><p>The further breaking down of each feature allows us to extract meaningful, biological information, that can be utilised by a proffessional to better guide their understanding of the output or their research.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="other-methods">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Other Methods</h3>
+                        <p><strong>Captum</strong> has several other methods for better understanding neural networks. Two that are prominently used are the <a href="https://captum.ai/api/layer.html"><strong>Layer Attribtuions</strong></a> class and the <a href="https://captum.ai/api/neuron.html"><strong>Neurons Attribtuions</strong></a> class. These facilitate insight into how each layer in the neural network contributed to the final prediction and how each feature inputs into each neuron.<br><br><strong>Layer Attributions</strong> allow you to examine the importance of how each layer of your network are most relevant for a prediction. This is particularly valuable for debugging deep networks and understanding what patterns the model has learned at different levels of abstraction.<br><br><strong>Neuron Attributions</strong> go deeper by showing how individual neurons respond to specific inputs, revealing which input features activate particular neurons and how strongly. This granular view helps identify whether neurons have learned meaningful patterns or spurious correlations, and can guide network architecture improvements.<br><br>Combined, these two methods can help break down every component of the model to best understand how it is giving predictions. They enable you to trace the flow of information from raw inputs through hidden layers to final outputs, making it possible to identify exactly where and how the model processes different types of information.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="summary">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Summary</h3>
+                        <p>Gaining meaningful insights from machine learning models can be arduous, relying on domain knowledge combined with a deep dive into how the scale of values of a feature contribute to a prediction. Even in the cases where you can find a feature that is important to a prediction, you must remember that it is still a correlation, not a causation. There have been many cases of models with accurate predictions, but were fundamentally flawed due to biases in their training data. It was up do researchers to identify these biases and rectify them, not to confirm them as true.</p>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <div class="page-navigation">
+            <a href="./feature-importance.html" class="nav-button prev">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                Previous
+            </a>
+            <a href="./assignment.html" class="nav-button next">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </a></div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© All materials are copyright scryptIQ 2025</div>
+            <div>Static Notebook - Pre-executed Content</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/main.js"></script>
+    
+    <!-- Initialize syntax highlighting -->
+    <script>
+        // Set page ready flag immediately for PDF generation
+        window.pageReady = true;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>
+    
