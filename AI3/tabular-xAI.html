@@ -167,7 +167,7 @@ torch.cuda.manual_seed(SEED)</code></pre>
         
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-31">data = pd.read_csv(&quot;data/breast_cancer.csv&quot;)
+                <pre><code class="language-python" id="code-31">data = pd.read_csv(&quot;./data/breast_cancer.csv&quot;)
 
 # Change the diagnosis column to binary values
 label_dict = {&#x27;M&#x27;: 1, &#x27;B&#x27;: 0}
@@ -201,7 +201,7 @@ print(f&quot;Number of classes: {n_classes}&quot;)</code></pre>
 FileNotFoundError                         Traceback (most recent call last)
 Cell In[2], line 3
       1 # FIXED WITH OUTPUT
-----&gt; 3 data = pd.read_csv(&quot;data/breast_cancer.csv&quot;)
+----&gt; 3 data = pd.read_csv(&quot;./data/breast_cancer.csv&quot;)
       5 # Change the diagnosis column to binary values
       6 label_dict = {&#x27;M&#x27;: 1, &#x27;B&#x27;: 0}
 
@@ -259,7 +259,7 @@ File ~/work/AI3_Lesson_Resources/AI3_Lesson_Resources/self-repo/.venv/lib/python
     934         # Binary mode
     935         handle = open(handle, ioargs.mode)
 
-FileNotFoundError: [Errno 2] No such file or directory: &#x27;data/breast_cancer.csv&#x27;</pre></div>
+FileNotFoundError: [Errno 2] No such file or directory: &#x27;./data/breast_cancer.csv&#x27;</pre></div>
         </div>
         <p>The dataset is actually quite small, with only 569 samples. This would usually not be a good candidate for deep learning, but we will use it to demonstrate the process as it is quick to train and has clear, defined features.</p>
                     </div>
