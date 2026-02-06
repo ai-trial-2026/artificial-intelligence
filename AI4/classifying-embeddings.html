@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- MathJax for mathematical notation -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
+    <!-- Syntax Highlighting with highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/android-chrome-512x512.png">
+    
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href=../assets/colours.css>
+    <link rel="stylesheet" href="../assets/shared-styles.css">
+    <link rel="stylesheet" href="../assets/nav-bar.css">
+    <link rel="stylesheet" href="../assets/module_card.css">
+    <link rel="stylesheet" href="../assets/learning_outcomes.css">
+    <link rel="stylesheet" href="../assets/learning_lists.css">
+    <link rel="stylesheet" href="../assets/box_styles.css">
+    <link rel="stylesheet" href="../assets/code_styles.css">
+    <link rel="stylesheet" href="../assets/static_output.css">
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2D - AI4 - Classifying Embeddings</title>
+        
+</head>
+<body>
+    
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <a href="../homepage.html" style="text-decoration: none; display: inline-block;">
+                <img src="../assets/scryptIQ_logo_dark.png" alt="scryptIQ Logo" class="sidebar-logo">
+            </a>
+        </div>
+
+        <h3>Content</h3>
+        <ul>
+            <li><a href="./introduction.html" class="">Introduction</a></li><li><a href="./data-processing.html">Processing the data</a></li><li><a href="./language-models-basics.html">Protein Language Models Fundamentals</a></li>
+            <li>
+                <div class="nav-toggle active" data-target="expandable-section-3">
+                    Classifying Embeddings
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <ul class="nested-nav expanded" id="expandable-section-3"><li><a href="#introduction">Introduction</a></li><li><a href="#loading-the-data">Loading the Data</a></li><li><a href="#batch-loader">Batch Loader</a></li><li><a href="#model-set-up">Model set up</a></li><li><a href="#training-setup">Training setup</a></li><li><a href="#running-training">Running Training</a></li><li><a href="#summary">Summary</a></li>
+                </ul>
+            </li><li><a href="./evaluating.html">Evaluating the Model</a></li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
+        </ul>
+
+        <h3 class="collapsible-header collapsed">
+            Resources
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+                <li><a href="./glossary.html">Glossary</a></li><li><a href="./downloads.html">Downloads</a></li><li><a href="../HB/introduction.html">Handbook</a></li>
+            </ul>
+        </div>
+
+        <h3 class="collapsible-header collapsed">
+            Previous Modules
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+            <li><a href="../AI1/introduction.html">AI1</a></li>
+            <li><a href="../AI2/introduction.html">AI2</a></li>
+            <li><a href="../AI3/introduction.html">AI3</a></li>
+        </ul>
+        </div>
+
+        <h3>
+            <li><a href="./report-issue.html">Report an Issue</a></li>
+        </h3>
+    </div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle">❮</button>
+    
+    <!-- Main Content Area -->
+    <div id="main-content" class="main-content">
+        <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <h1 class="page-title">Artificial Intelligence 4</h1>
+            <div class="nav-actions">
+                <a href="../homepage.html" class="text-button" title="Materials homepage">
+                    Homepage
+                </a>
+                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    Learn to Discover
+                </a>
+            </div>
+        </div>
+
+        
+            <div class="module-card" id="introduction">
+                <div class="module-header">
+                    Classifying Embeddings <span class="module-tag">AI4</span>
+                </div>
+                <div class="module-body">
+                    <h3>Learning Objectives</h3>
+                    <div class="learning-outcomes">
+                        <div class="outcome-item">
+                    <span class="outcome-number">1</span>
+                    <span class="outcome-text">Load in and prepare the embeddings</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">2</span>
+                    <span class="outcome-text">Design a MLP classifier</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">3</span>
+                    <span class="outcome-text">Train the classifier</span>
+                </div>
+                    </div>
+                    <h3>Introduction</h3>
+                    <p>Now that we have gained <strong>embeddings</strong> of our <em>wt-mt</em> AA pair we can utilise it as an input to a neural network. If you remember back to the first section, each mutation was accompanied with a label which indicated whether the missense mutation is <strong>benign (0)</strong> or <strong>pathogenic (1)</strong>.<br><br>Our aim is to design and train a neural net that can accurately predict this given an embedding.</p>
+                </div>
+            </div>
+            
+            <div class="module-card" id="loading-the-data">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Loading the Data</h3>
+                        <p>To train our model we will need the data from the train <em>pickle</em> we saved in the previous section. Pickles can be loaded in much the same way they are saved, through a file handling <code>with</code> statement.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-43">import pickle
+import numpy as np
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
+from torch.optim.lr_scheduler import ReduceLROnPlateau</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="info-box note-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                NOTE
+            </div>
+            <div class="box-content">
+                <p>Due to the file upload contraints with GitHub only files <strong>below 100 MB</strong> can be uploaded. We have therefore split up the embedding pickles into chunks that can be read in through a <code>for-loop</code>. See the code for this in the collapsable cell below.</p>
+            </div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-collapse-header" onclick="toggleCodeCollapse('code-44')">
+                <span class="code-collapse-icon">▶</span>
+                <span class="code-collapse-label">Show code</span>
+            </div>
+            <div class="code-container code-fixed code-collapsed" id="code-44-container">
+                <pre><code class="language-python" id="code-44">import glob
+
+# Load all chunks
+chunks = []
+for chunk_file in sorted(glob.glob(&quot;./data/embeddings_train_chunk_*.pkl&quot;)):
+    with open(chunk_file, &#x27;rb&#x27;) as file:
+        chunks.append(pickle.load(file))
+
+# Combine all chunks
+test_dict = {
+    &#x27;target_id&#x27;: [],
+    &#x27;embeddings&#x27;: [],
+    &#x27;labels&#x27;: []
+}
+
+for chunk in chunks:
+    test_dict[&#x27;target_id&#x27;].extend(chunk[&#x27;target_id&#x27;])
+    test_dict[&#x27;embeddings&#x27;].extend(chunk[&#x27;embeddings&#x27;])
+    test_dict[&#x27;labels&#x27;].extend(chunk[&#x27;labels&#x27;])
+
+X = np.array(test_dict[&#x27;embeddings&#x27;])
+y = test_dict[&#x27;labels&#x27;]</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-45">with open(&quot;./data/embs_for_train.pkl&quot;, &#x27;rb&#x27;) as file:
+    train_dict = pickle.load(file)
+
+X = np.array(train_dict[&#x27;embeddings&#x27;])
+y = train_dict[&#x27;labels&#x27;]</code></pre>
+            </div>
+            
+        </div>
+        <p>For training we only need the <strong>embeddings</strong> and <strong>labels</strong>, the IDs can be left behind.</p><h4>Split data into training and test sets</h4><p>Previously when working with our machine learning models, we have just been using <strong>train</strong> and <strong>test</strong>. Here, we will use a further set, the <strong>validation</strong> set, a subset of the training dataset.<br><br>Each subset of the data serves a unique purpose:</p><table class="markdown-table">
+<thead>
+<tr>
+<th>Split</th>
+<th>Purpose</th>
+<th>Proportion of Total Data</th>
+<th>Usage Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Training set</strong></td>
+<td>Used to train the model (similar to the course materials you study during the semester).</td>
+<td>~60-80%</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Validation set</strong></td>
+<td>Used to fine-tune the model (akin to taking practice exams before the final exam).</td>
+<td>~10-20%</td>
+<td>Often, but not always</td>
+</tr>
+<tr>
+<td><strong>Testing set</strong></td>
+<td>Used to evaluate the model’s performance, providing an indication of how well it has learned (comparable to the final exam at the end of the semester).</td>
+<td>~10-20%</td>
+<td>Always</td>
+</tr>
+</tbody>
+</table>
+        <div class="info-box note-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                NOTE
+            </div>
+            <div class="box-content">
+                <p>In real-world scenarios, this step is typically performed at the very beginning of a project. The test set must remain isolated from the training and validation data to ensure the model&#x27;s performance reflects its ability to <strong>generalise</strong> to unseen examples.</p>
+            </div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-46">from sklearn.model_selection import train_test_split
+
+X_train, X_valid, y_train, y_valid = train_test_split(X, y,
+                                                            test_size=0.2,
+                                                            shuffle=True,
+                                                            stratify=y,
+                                                            random_state=42)
+print(&#x27;X_train shape: &#x27;, X_train.shape)
+print(&#x27;X_valid shape: &#x27;, X_valid.shape)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">X_train shape:  (64065, 2560)
+X_valid shape:  (16017, 2560)
+</pre></div>
+        </div>
+        <p>We will also be needing our validation dataset for the next section, <strong>evaluation</strong>, so these need to be saved.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-47">with open(&quot;./data/validation_data.pkl&quot;, &#x27;wb&#x27;) as file:
+    val_dict = {&#x27;embeddings&#x27;: X_valid, &#x27;labels&#x27;: y_valid}
+    pickle.dump(val_dict, file)
+    print(&#x27;Data saved successfully&#x27;)</code></pre>
+            </div>
+            
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="batch-loader">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Batch Loader</h3>
+                        <p>As in previous lessons we will require the <code>DataLoader</code> and <code>Dataset</code> class from <em>PyTorch</em>. However, previously we were working with datasets built in the <em>PyTorch</em> system, whereas now we are working with a custom datset.<br><br>To have our data work with <code>DataLoader</code> we will need to create a custom <strong>dataset</strong> class, subclassed from <code>Dataset</code>.</p><h4>Dataset</h4><p><code>Dataset</code> has three most commonly used functions: <code>__init__</code>, <code>__len__</code>, and <code>__getitem__</code>.:</p><p><code>__init__</code>: This function is the initializer or constructor for the Dataset class. It&#x27;s where you define and initialize the dataset&#x27;s properties, such as file paths, data lists, transformations, or any other initialization parameters needed for your dataset. Essentially, this method sets up the dataset object when it is first created, preparing it for use.<br><br><code>__len__</code>: This method returns the total number of items or samples in the dataset. When this function is called, it should provide the length of the dataset, which is typically the total number of samples that are available to be returned. This is useful for understanding the size of the dataset and is used by DataLoader to determine how many batches are needed to iterate over the entire dataset.<br><br><code>__getitem__</code>: This method is responsible for fetching and returning a single item from the dataset. Given an index, <code>__getitem__</code> retrieves the specific sample at that index. This method is essential for indexing and iterating through the dataset. It can include the logic for data loading, preprocessing, and transformation, returning the data sample (and possibly its label) in the format required for model training.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-48">class EmbDataset(Dataset): # Subclass Dataset
+    def __init__(self, X, y):
+        super().__init__()
+
+        self.seq = torch.tensor(X)
+        self.label = torch.tensor(y)
+
+    def __len__(self):
+        return len(self.seq)
+
+    def __getitem__(self, index):
+        return self.seq[index], self.label[index]</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-49">BATCH_SIZE = 32
+
+train_dataset = EmbDataset(X_train, y_train)
+val_dataset = EmbDataset(X_valid, y_valid)
+
+# To dataloader
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True) 
+val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)</code></pre>
+            </div>
+            
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="model-set-up">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Model set up</h3>
+                        <p>Going back to <strong>AI1</strong> we will be designing a <strong>multi layer perceptron</strong> (MLP).<br><br>We will be introducing a new <strong>activation layer</strong>, a variation of the <strong>ReLU</strong>. function. Where the <strong>ReLU</strong> activation function zeros all output below a threshold, the <a href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.LeakyReLU">Leaky ReLU</a> allows a small gradient when the unit is not active. This can help keep the gradient from vanishing.<br><br>A vanishing gradient can make it difficult for the network to learn, as the weights in the network become very small and the learning process slows down or stops.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-50">class MLP_LeakyReLu_binary(nn.Module):
+    &quot;&quot;&quot;Simple MLP Model for Classification Tasks.&quot;&quot;&quot;
+
+    def __init__(self, num_input, num_hidden, num_output=1):
+        &quot;&quot;&quot;
+        Initialise the MLP Classifier with input, hidden, and output layers.
+
+        Args:
+            num_input (int): The number of input features.
+            num_hidden (int): The number of units in the hidden layer.
+            num_output (int): The number of output classes.
+        &quot;&quot;&quot;
+        # Call the parent class (nn.Module) initialiser
+        super().__init__()
+
+        # Define the first linear layer (input to hidden)
+        self.hidden = nn.Linear(num_input, num_hidden)
+        
+        # Define the second part of the network (hidden to output)
+        # Includes Dropout for regularisation, LeakyReLU activation, and a final linear layer
+        self.predict = nn.Sequential(
+            nn.Dropout(0.5),            # Apply dropout with 50% probability to prevent overfitting
+            nn.LeakyReLU(inplace=True), # Apply LeakyReLU activation with in-place modification
+            nn.Linear(num_hidden, num_output) # Fully connected layer for output predictions
+        )
+        self.sigmoid = nn.Sigmoid()  # Apply sigmoid activation to the output
+
+
+    def forward(self, x):
+        &quot;&quot;&quot;
+        Define the forward calculation process to train the network.
+
+        Args:
+            x (torch.Tensor): Input data tensor of shape (batch_size, num_input).
+
+        Returns:
+            torch.Tensor: Output predictions of shape (batch_size, num_output).
+        &quot;&quot;&quot;
+        x = self.hidden(x)  # Pass the input through the first linear layer (input to hidden)
+        x = self.predict(x) # Pass the hidden layer output through the prediction layers
+        x = self.sigmoid(x) # Apply sigmoid activation to the output
+
+        return x            # Return the final output</code></pre>
+            </div>
+            
+        </div>
+        <p>As before, lets check for any bugs by giving it some randomly generated data of the right shape.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-51">n_input = X_train[0].shape[0]
+
+tmp_input = torch.randn(32, n_input)
+
+# Initialise a model object
+model = MLP_LeakyReLu_binary(n_input, 1280, 1)
+output = model(tmp_input)
+
+print(output[:5])</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">tensor([[0.5495],
+        [0.5659],
+        [0.4097],
+        [0.5975],
+        [0.5472]], grad_fn=&lt;SliceBackward0&gt;)
+</pre></div>
+        </div>
+        
+        <div class="info-box note-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                NOTE
+            </div>
+            <div class="box-content">
+                <p>Even though the problem is a <strong>binary</strong> (2 class) problem, the output can be set to <strong>one</strong>. This is because the two results are dependent on one another, i.e. if it is positive it can not be negative , and vice versa. We can therefore increase efficency for the training and prediction by reducing the final neuron to one, reducing the parameters and the output tensor.</p>
+            </div>
+        </div>
+        <p>Checking out the trainable parameters, it is a modest <strong>3.2 million</strong>.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-52"># The trainable parameters
+total_trainable_params = sum(
+    p.numel() for p in model.parameters() if p.requires_grad)
+print(f&#x27;{total_trainable_params:,} training parameters.&#x27;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">3,279,361 training parameters.
+</pre></div>
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="training-setup">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Training setup</h3>
+                        <p>The training setup builds upon what we have seen in the previous lessons.<br><br>Here is a breakdown of the training setup changes:<br><ul class="nested-list"><li><strong>loss function</strong>: Binary cross-entropy. Previously we have used cross-entropy for classification tasks as we had a multi-class classification problem. Here we have a binary classification problem, so we can use binary cross-entropy.</li><br><li><strong>optimiser</strong>: The Adam optimiser. Previously we have used the SGD optimiser.</li></ul></p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-53">def trainer(train_loader, val_loader, model, config):
+    &quot;&quot;&quot;
+    Train a PyTorch model with early stopping and validation.
+
+    Args:
+        train_loader (DataLoader): DataLoader for the training dataset.
+        val_loader (DataLoader): DataLoader for the validation dataset.
+        model (nn.Module): The PyTorch model to train.
+        config: Configuration object containing training parameters.
+    &quot;&quot;&quot;
+    # Load training configuration parameters.
+    device = config.device  # Device to use (e.g., CPU or GPU).
+    early_stop = config.early_stop_patience  # Early stopping patience.
+    n_epochs = config.n_epochs  # Number of training epochs.
+
+    # Binary Cross Entropy with sum reduction.
+    criterion = nn.BCELoss(reduction=&#x27;sum&#x27;) # sum rather than mean as values are very small
+
+    # Adam optimiser with specified learning rate).
+    optimiser = torch.optim.Adam(
+        model.parameters(), lr=config.learning_rate, weight_decay=0
+    )
+
+    # Define the learning rate scheduler; reduces LR when validation loss plateaus
+    lr_scheduler = ReduceLROnPlateau(optimiser, mode=&#x27;min&#x27;, 
+                    factor=config.lr_factor, patience=config.learning_rate_patience, 
+                    )
+
+    # Initialise variables for training.
+    n_epochs, best_loss, early_stop_count = n_epochs, float(&#x27;inf&#x27;) , early_stop
+
+    # Training loop for each epoch.
+    for epoch in range(n_epochs):
+
+        model.train()  # Set the model to training mode.
+        loss_record = []  # List to record training losses for the epoch.
+
+        for batch in train_loader:
+
+            optimiser.zero_grad()  # Clear gradients from the previous step.
+
+            # Move data to the specified device.
+            b_seq, b_labels = tuple(t.to(device) for t in batch)
+
+            # Forward pass: compute predictions from the model.
+            pred = model(b_seq.float())
+
+            # Convert labels to float for BCELoss compatibility.
+            b_labels = b_labels.float()
+
+            # Calculate the loss between predictions and true labels.
+            # Even though there is only one prediction we will need to index it
+            loss = criterion(pred[:, 0], b_labels)
+
+            # Backward pass: compute gradients.
+            loss.backward()
+
+            # Update model parameters
+            optimiser.step()
+
+            loss_record.append(loss.detach().item())  # Record the loss for this batch.
+
+        # Compute the mean training loss for the epoch.
+        mean_train_loss = sum(loss_record) / len(loss_record)
+
+        # Start evaluation with validation data
+
+        model.eval()  # Set the model to evaluation mode.
+        loss_record = []  # Reset loss record for validation.
+
+        for batch in val_loader:
+            # Move data to the specified device.
+            b_seq, b_labels = tuple(t.to(device) for t in batch)
+
+            # Forward pass without gradient computation (inference mode).
+            with torch.no_grad():
+                b_labels = b_labels.float()  # Convert labels to float for compatibility.
+                pred = model(b_seq.float())  # Generate predictions.
+                loss = criterion(pred[:, 0], b_labels)  # Calculate the validation loss.
+
+            loss_record.append(loss.item())  # Record validation loss for this batch.
+
+        # Compute the mean validation loss for the epoch.
+        mean_valid_loss = sum(loss_record) / len(loss_record)
+
+        if epoch % 5 == 0:
+            print(&#x27;\n=========================== Evaluating=========================&#x27;)
+            # Print training and validation loss for the epoch.
+            print(f&#x27;Epoch [{epoch + 1}/{n_epochs}]: Train loss: {mean_train_loss:.4f}, Valid loss: {mean_valid_loss:.4f}&#x27;)
+
+        # Step the learning rate scheduler based on validation loss
+        lr_scheduler.step(mean_valid_loss)
+
+        # Check if the validation loss is the best so far.
+        if mean_valid_loss &lt; best_loss:
+
+            best_loss = mean_valid_loss  # Update the best loss.
+
+            # Save the current best model&#x27;s state.
+            torch.save(model.state_dict().copy(), &#x27;./data/embedding_model.pt&#x27;)
+
+            print(&#x27;\nSaving model with loss {:.3f}...&#x27;.format(best_loss))
+
+            early_stop_count = 0  # Reset early stopping counter.
+        else:
+            early_stop_count += 1  # Increment the early stopping counter.
+
+        # Stop training if the model hasn&#x27;t improved for a specified number of epochs.
+        if early_stop_count &gt;= early_stop:
+            print(f&#x27;Early stopping after {early_stop} epochs without improvement.&#x27;)
+            break # Exit the training loop.</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-54">SEED = 42
+torch.manual_seed(SEED)
+# Set the seed for all devices (both CPU and CUDA)
+torch.cuda.manual_seed_all(SEED)
+
+# Check if GPU is available
+if torch.cuda.is_available():
+    # if there are multiple GPUs, choose the first one
+    device = torch.device(f&quot;cuda:0&quot;)
+    print(f&#x27;There are {torch.cuda.device_count()} GPU(s) available.&#x27;)
+    print(f&#x27;Device name: {torch.cuda.get_device_name(0)}&#x27;)
+else:
+    print(&quot;No GPU detected! Falling back to CPU&quot;)
+    # If the GPU is not available, use the CPU
+    device = torch.device(&quot;cpu&quot;)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">No GPU detected! Falling back to CPU
+</pre></div>
+        </div>
+        <p>You may have noticed that the <code>trainer</code> function takes a <strong>config</strong> as an argumment. We can use this to pass a class with our training hyperparameters. This can be a neater way of storing changable variables in one place.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-55">class Config:
+    &quot;&quot;&quot;
+    Configuration class for model training settings.
+    &quot;&quot;&quot;
+    # Specify the device to be used for computation (CPU or GPU).
+    device = device
+
+    # Early stopping patience: number of epochs to wait for improvement (val loss)
+    early_stop_patience = 5
+
+    # Total number of epochs to train the model.
+    n_epochs = 50
+
+    # Learning rate for the optimiser.
+    # Smaller values lead to more gradual updates, while larger values result in faster updates.
+    learning_rate = 1e-4
+
+    # Learning rate scheduler configuration
+    learning_rate_patience = 3  # Number of epochs to wait before reducing learning rate
+    lr_factor = 0.1 # Factor by which to reduce the learning rate</code></pre>
+            </div>
+            
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="running-training">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Running Training</h3>
+                        <p>With our function setup all we need to do is ensure our device is set, call the <strong>config</strong> class, and then the trainer. The best performing models paramters will be saved to the <code>data</code> folder under the name <code>embedding_model.ckpt</code>.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-56"># Initialise the config class
+config = Config()
+
+# Call the trainer function
+trainer(train_loader, val_loader, model, config)</code></pre>
+            </div>
+            
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="summary">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Summary</h3>
+                        <p>Our model is now trained and we can use it to classify new embeddings.<br><br>In the next section, we’ll walkthrough  demonstrate how to use this trained model to make predictions on the test set. We’ll also analyze the results to assess whether the model’s performance is consistent and reliable. Stay tuned to evaluate the true robustness of your model!</p>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <div class="page-navigation">
+            <a href="./language-models-basics.html" class="nav-button prev">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                Previous
+            </a>
+            <a href="./evaluating.html" class="nav-button next">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </a></div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© All materials are copyright scryptIQ 2025</div>
+            <div>Static Notebook - Pre-executed Content</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/main.js"></script>
+    
+    <!-- Initialize syntax highlighting -->
+    <script>
+        // Set page ready flag immediately for PDF generation
+        window.pageReady = true;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>
+    

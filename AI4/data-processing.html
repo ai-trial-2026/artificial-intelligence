@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- MathJax for mathematical notation -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
+    <!-- Syntax Highlighting with highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="../assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/android-chrome-512x512.png">
+    
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href=../assets/colours.css>
+    <link rel="stylesheet" href="../assets/shared-styles.css">
+    <link rel="stylesheet" href="../assets/nav-bar.css">
+    <link rel="stylesheet" href="../assets/module_card.css">
+    <link rel="stylesheet" href="../assets/learning_outcomes.css">
+    <link rel="stylesheet" href="../assets/learning_lists.css">
+    <link rel="stylesheet" href="../assets/box_styles.css">
+    <link rel="stylesheet" href="../assets/code_styles.css">
+    <link rel="stylesheet" href="../assets/static_output.css">
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2D - AI4 - Processing the data</title>
+        
+</head>
+<body>
+    
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <a href="../homepage.html" style="text-decoration: none; display: inline-block;">
+                <img src="../assets/scryptIQ_logo_dark.png" alt="scryptIQ Logo" class="sidebar-logo">
+            </a>
+        </div>
+
+        <h3>Content</h3>
+        <ul>
+            <li><a href="./introduction.html" class="">Introduction</a></li>
+            <li>
+                <div class="nav-toggle active" data-target="expandable-section-1">
+                    Processing the data
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <ul class="nested-nav expanded" id="expandable-section-1"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-a-protein-language-model">What is a protein language model?</a></li><li><a href="#data-preparation">Data Preparation</a></li><li><a href="#regular-expression">Regular Expression</a></li><li><a href="#aa-code-conversion">AA Code Conversion</a></li><li><a href="#merging-the-data">Merging the data</a></li><li><a href="#generating-mutated-seqeunces">Generating Mutated Seqeunces</a></li><li><a href="#summary">Summary</a></li>
+                </ul>
+            </li><li><a href="./language-models-basics.html">Protein Language Models Fundamentals</a></li><li><a href="./classifying-embeddings.html">Classifying Embeddings</a></li><li><a href="./evaluating.html">Evaluating the Model</a></li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
+        </ul>
+
+        <h3 class="collapsible-header collapsed">
+            Resources
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+                <li><a href="./glossary.html">Glossary</a></li><li><a href="./downloads.html">Downloads</a></li><li><a href="../HB/introduction.html">Handbook</a></li>
+            </ul>
+        </div>
+
+        <h3 class="collapsible-header collapsed">
+            Previous Modules
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+            <li><a href="../AI1/introduction.html">AI1</a></li>
+            <li><a href="../AI2/introduction.html">AI2</a></li>
+            <li><a href="../AI3/introduction.html">AI3</a></li>
+        </ul>
+        </div>
+
+        <h3>
+            <li><a href="./report-issue.html">Report an Issue</a></li>
+        </h3>
+    </div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle">❮</button>
+    
+    <!-- Main Content Area -->
+    <div id="main-content" class="main-content">
+        <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <h1 class="page-title">Artificial Intelligence 4</h1>
+            <div class="nav-actions">
+                <a href="../homepage.html" class="text-button" title="Materials homepage">
+                    Homepage
+                </a>
+                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    Learn to Discover
+                </a>
+            </div>
+        </div>
+
+        
+            <div class="module-card" id="introduction">
+                <div class="module-header">
+                    Processing the data <span class="module-tag">AI4</span>
+                </div>
+                <div class="module-body">
+                    <h3>Learning Objectives</h3>
+                    <div class="learning-outcomes">
+                        <div class="outcome-item">
+                    <span class="outcome-number">1</span>
+                    <span class="outcome-text">What is a protein language model</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">2</span>
+                    <span class="outcome-text">Getting raw protein data ready</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">3</span>
+                    <span class="outcome-text">Protein sequence processing</span>
+                </div>
+<div class="outcome-item">
+                    <span class="outcome-number">4</span>
+                    <span class="outcome-text">Vectorise protein sequence with protein language model</span>
+                </div>
+                    </div>
+                    <h3>Introduction</h3>
+                    <p>The large part of this section will be a dive into one of the most crucial aspects of machine learning workflows; data preprocessing.<br><br>Specifically, we will focus on handling and preparing protein sequence data retrieved from the <a href="https://www.ncbi.nlm.nih.gov/refseq/"><strong>RefSeq</strong> database</a>. Proper preprocessing can significantly enhance the performance of machine learning models by ensuring that the data is clean, well-structured, and suitably formatted for training.<br><br>Our goal in this tutorial is to equip you with the tools and techniques necessary to transform raw protein sequences into a format that is compatible with machine learning models utilising protein language models.</p>
+                </div>
+            </div>
+            
+            <div class="module-card" id="what-is-a-protein-language-model">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>What is a protein language model?</h3>
+                        <p>In traditional methods, when aiming to extract features from proteins, common approaches include bioinformatics techniques such as calculating evolutionary scores (i.e., conserved scores) based on homology sequences, or assessing overall physicochemical properties of the protein, like <em>hydrophobicity</em> or <em>hydrophilicity</em>. However, human understanding of proteins is limited, which in turn limits the range of extractable features.<br><br>In 2021, Meta and Rost&#x27;s group, utilizing 250 million protein sequences, developed <a href="https://github.com/facebookresearch/esm">ESM</a> and <a href="https://github.com/agemagician/ProtTrans">ProtT5</a> models, collectively known as protein language models, each with their own model architecture.<br><br>Unlike a standard neural network, language models are designed to understand and generate sequential data by learning patterns and relationships within sequences. Rather than simply mapping inputs to outputs through fixed layers, language models use specialised architectures called <strong>Transformers</strong>, which convert sequences into a format that can be processed by a computer, <em>embeddings</em> (more on this later). The embeddings are then processed by the <strong>attention mechanism</strong>, which allows the model to identify which parts of the sequence are most relevant to the task at hand. The <strong>attention mechanism</strong> is able to understand the sequence as a whole, capturing long-range dependencies between elements, rather than processing it piece by piece, which was standard in previous natural language processing methods such as <em>recurrent neural networks</em>, <em>hidden Markov models</em>, and so on.<br><br>Information about protein sequences is learned during extensive training on very large datasets. For the <strong>ESM</strong> protein models we will be using, during training, a portion of the amino acids in the input sequences was randomly masked; for example, the protein sequence &quot;AOPIEYTLKQGFMCV&quot; might be altered to &quot;AO<code>&lt;mask&gt;</code>IEYTLKQGF<code>&lt;mask&gt;</code>CV&quot;. The task for the model was to predict the masked amino acids based on the unmasked content.<br><br>This process is similar to how Large Language Models (your ChatGPTs, Claude, Gemini, etc.) work, but instead of amino acids, words are used. Any problem which involves sequence data can potentially be solved with a language model.<br><br>Whilst this lesson will focus on protein language models, the principles are the same for any sequence data. If there are no pre-existing language models for a specific sequence data, it is possible to design and train your own language model. However, due to the need for large amounts of data and processing power this complex task is beyond the scope of this lesson.</p><p><img src="./images/study-evaluates-deep-l.jpg" alt="Protein to Neural Network" class="notebook-image"></p>
+        <div class="info-box note-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                NOTE
+            </div>
+            <div class="box-content">
+                <p>If you wish to learn more about protein models in depth, please read the information <a href="https://www.apoorva-srinivasan.com/plms/#:~:text=Protein%20%E2%80%9Clanguage%E2%80%9D%20is%20a%20lot,other%20domains%2C%20with%20profound%20implications.">here</a>.<br><br>Addtionally, for a deeper understanding of transformer architecture and attention mechanism, you can explore this <a href="https://towardsdatascience.com/transformers-141e32e69591">article</a>.</p>
+            </div>
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="data-preparation">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Data Preparation</h3>
+                        <p>Before we get to the language model we need to process our data.<br><br>This lesson was created by the author of the <a href="https://github.com/wlin16/VariPred">VariPred</a> toolbox. The toolbox makes use of pre-trained protein language models to predict variant pathogenicity. More can be read about the toolbox in the Nature article <a href="https://www.nature.com/articles/s41598-024-51489-7">here</a>.<br><br>The data used in this lesson can be downloaded from the repository itself, however it is also available in the <em>data</em> folder in your lesson repository for you to run yourselves.</p><h4>Loading the dataset</h4>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-1">import pandas as pd</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-2">seq = pd.read_csv(&quot;./data/transcript_seq.csv&quot;)
+train = pd.read_csv(&quot;./data/VariPred_train.txt&quot;, sep=&quot;\t&quot;)
+test = pd.read_csv(&quot;./data/VariPred_test.txt&quot;, sep=&quot;\t&quot;)</code></pre>
+            </div>
+            
+        </div>
+        <p>Our data comes in <strong>three</strong> parts. <code>seq</code> contains the amino acid sequences of the proteins, plus a column with a protein ID, <code>NP_id</code>.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-3">print(seq.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">         NP_id                                             wt_seq
+0  NP_000005.2  MGKNKLLHPSLVLLLLVLLPTDASVSGKPQYMVLVPSLLHTETTEK...
+1  NP_000006.2  MDIEAYFERIGYKNSRNKLDLETLTDILEHQIRAVPFENLNMHCGQ...
+2  NP_000007.1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...
+</pre></div>
+        </div>
+        <p>The remaining <strong>two</strong> dataframes are for the training data (<code>train</code>) and the other is for the validation data (<code>test</code>). These dataframes contain the information about mutations of the wildtype sequence above.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-4">print(train.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">                 target_id  label
+0   NP_689699.2:p.Gly56Ser      0
+1  NP_689699.2:p.Gly665Ala      0
+2  NP_056473.3:p.Ala203Val      0
+</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-5">print(test.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">                  target_id  label
+0  NP_000005.2:p.Arg1031Gln      0
+1   NP_000007.1:p.Asp168Gly      1
+2   NP_000007.1:p.Gly362Glu      1
+</pre></div>
+        </div>
+        <p>Here, target_id column in both train and test dataframes contains information in the format of &quot;<code>RefSeq id</code>: <strong>wildtype amino acid</strong> at a <strong>specific position</strong> mutated to <strong>mutated amino acid</strong>&quot;. The label column indicates whether the missense mutation is <strong>benign (0)</strong> or <strong>pathogenic (1)</strong>.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="regular-expression">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Regular Expression</h3>
+                        <p>The <code>seq</code> dataframe contains the protein id (here all be represented with NP codes) of the wildtype and the corresponed amino acid sequence. The <code>train</code> or <code>test</code> dataset contains all necessary details of each variant, including protein id (NP code), wildtype amino acid, mutational position, and mutated amino acid, which are integrated in <code>HGVSp</code> format in the target_id column.<br><br>In this section, we aim to<ol class="nested-list"><li>parse the information of each variant in the <code>HGVSp</code> format, and</li><br><li>generate mutated protein sequences according to the mutational information and the corresponded wildtype sequence</li></ol></p><p>To do so, we need to seperate information of each variant and stored them individually into new columns in the datasets. Here, we can apply a super useful strategy called <strong>regular expression</strong>. Whilst this technique is not directly related to protein language models, it is a powerful tool that can be applied to a wide range of tasks in bioinformatics and data analysis.<br><br><strong>Regular expression</strong> (shortened as <em>regex</em> ), is a sequence of characters that specifies a match pattern in text. Usually such patterns are used by string-searching algorithms to &quot;find&quot; or &quot;find and replace&quot; subsequences within a string. We won&#x27;t go over creating a <strong>regex</strong> seqeunce here, just its application. However, the tip box below has a useful workflow for creating one.</p>
+        <div class="info-box tip-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                TIP
+            </div>
+            <div class="box-content">
+                <p>A great website that can help you to extract sequence of characters that specifies a match pattern in text is <a href="https://regex101.com/">https://regex101.com/</a><br><br>The easiest way to get a correct regular expression pattern for your target string is:<br><ol class="nested-list"><li>Copy and paste the string you would like to match the pattern into the <code>TEST STRING</code> blank in https://regex101.com/. Here, for example, NP_000005.2:p.Arg1031Gln</li><br><li>Then, go to your favourite genAI LLM, and use this prompt:</li></ol><pre class="markdown-code-block"><code>What is the regular expression pattern for strings like &quot;NP_000005.2:p.Arg1031Gln&quot; in python? I want to match the first item before colon, the second item with three characters after p., all following digitals, and the last three characters in different groups. For example, here I would like to get &quot;NP_000005.2&quot;, &quot;Arg&quot;, &quot;1031&quot;, and &quot;Gln&quot;</code></pre><br><ol class="nested-list"><li>Copy and paste the regular expression pattern given by ChatGPT into the blank showing <strong>insert your regular expression here</strong> at https://regex101.com/</li></ol></p>
+            </div>
+        </div>
+        <h4>Applying regex</h4><p>If we look at one of our <strong>target IDs</strong> again, it is made up of several parts delineated by <code>.</code> or <code>:</code>, with changing sections of letters and numbers.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-6">test[&quot;target_id&quot;][0]</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-result">&#x27;NP_000005.2:p.Arg1031Gln&#x27;</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-7">#&#x27;re&#x27; is a module in Python that provides support for regular expressions. 
+import re</code></pre>
+            </div>
+            
+        </div>
+        <p>The regex pattern below has been designed to parse and extract specific compenents from our target ID, breaking it down into <strong>five</strong> known groups.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-8">regex_pattern = r&quot;(.+(?=:))(:p.)([A-Z][a-z]+)([0-9]+)([A-Z][a-z]+)&quot;</code></pre>
+            </div>
+            
+        </div>
+        <p><code>re.search</code> is a function in the &#x27;re&#x27; module that searches for a specified pattern within a string. It returns a match object if the pattern is found, otherwise it returns None.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-9">txt = re.search(regex_pattern, test.target_id[0])
+
+print(txt)
+print(&quot;-&quot; * 50)
+print(&quot;input content: &quot;, txt[0])
+print(&quot;first match item: &quot;, txt[1])
+print(&quot;second match item: &quot;, txt[2])
+print(&quot;third match item: &quot;, txt[3])
+print(&quot;fourth match item: &quot;, txt[4])
+print(&quot;fifth match item: &quot;, txt[5])</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">&lt;re.Match object; span=(0, 24), match=&#x27;NP_000005.2:p.Arg1031Gln&#x27;&gt;
+--------------------------------------------------
+input content:  NP_000005.2:p.Arg1031Gln
+first match item:  NP_000005.2
+second match item:  :p.
+third match item:  Arg
+fourth match item:  1031
+fifth match item:  Gln
+</pre></div>
+        </div>
+        <p>The regex pattern has found the <strong>five</strong> items. We are only interested in <strong>four</strong> of the items:<ul class="nested-list"><li>protein id: <code>txt[1]</code></li><br><li>wildtype amino acid: <code>txt[3]</code></li><br><li>mutational position: <code>txt[4]</code></li><br><li>mutated amino acid: <code>txt[5]</code></li></ul></p><p>To extract them we will create a <em>function</em>:</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-10">def get_id(input_id):
+    &quot;&quot;&quot;
+    Parse protein variant notation to extract gene identifier and mutation details.
+    
+    This function uses regular expressions to parse HGVS-style protein variant 
+    notation (e.g., &quot;BRCA1:p.Gly123Ser&quot;) and extract the gene identifier, 
+    wild-type amino acid, position, and mutant amino acid.
+    
+    Parameters
+    ----------
+    input_id : str
+        Protein variant identifier in HGVS format. Expected format:
+        ``&lt;gene_id&gt;:p.&lt;WtAA&gt;&lt;position&gt;&lt;MtAA&gt;``
+        
+        Where:
+        - ``&lt;gene_id&gt;`` : Gene or protein name
+        - ``:p.`` : Protein-level variant prefix
+        - ``&lt;WtAA&gt;`` : Wild-type amino acid (three-letter code, e.g., &quot;Gly&quot;)
+        - ``&lt;position&gt;`` : Amino acid position in the sequence (integer)
+        - ``&lt;MtAA&gt;`` : Mutant amino acid (three-letter code, e.g., &quot;Ser&quot;)
+    
+    Returns
+    -------
+    gene_id : str
+        Gene or protein identifier extracted from the input string.
+    aa_index : str
+        Position of the amino acid mutation in the protein sequence (as string).
+    wt : str
+        Wild-type amino acid in three-letter code (e.g., &quot;Gly&quot;, &quot;Ala&quot;).
+    mt : str
+        Mutant amino acid in three-letter code (e.g., &quot;Ser&quot;, &quot;Val&quot;).
+  
+    &quot;&quot;&quot;
+    
+    # Use regular expression to match and extract specific parts of the input_id
+    txt = re.search(r&quot;(.+(?=:))(:p.)([A-Z][a-z]+)([0-9]+)([A-Z][a-z]+)&quot;, input_id)
+    
+    # Extract the gene_id, wildtype amino acid, mutational position, and mutated amino acid from the matched groups
+    gene_id = txt.group(1)
+    wt = txt.group(3)
+    aa_index = txt.group(4)
+    mt = txt.group(5)
+
+    return gene_id, aa_index, wt, mt</code></pre>
+            </div>
+            
+        </div>
+        <p>Rather than looping through every sample in the dataframe, we can use the <strong>pandas</strong> method <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.apply.html"><code>apply</code></a>, which will &quot;apply&quot; the given function to the value of each row. This is much faster the looping through the rows as it is vecotrised.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-11">test[&#x27;target_id&#x27;].apply(get_id)[0:3]</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-result">0    (NP_000005.2, 1031, Arg, Gln)
+1     (NP_000007.1, 168, Asp, Gly)
+2     (NP_000007.1, 362, Gly, Glu)
+Name: target_id, dtype: object</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-12">type(test[&#x27;target_id&#x27;].apply(get_id))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-result">pandas.Series</pre></div>
+        </div>
+        <p>The apply method returns a <em>pandas series</em> with each item being a tuple containing each of the returned variables. This can be <em>unpacked</em> and <em>zipped</em> so that it can added to <strong>four</strong> new columns in one go.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-13">test[&#x27;gene_id&#x27;], test[&#x27;aa_index&#x27;], test[&#x27;wt_aa&#x27;], test[&#x27;mt_aa&#x27;] = zip(*test[&#x27;target_id&#x27;].apply(get_id))
+
+print(test.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">                  target_id  label      gene_id aa_index wt_aa mt_aa
+0  NP_000005.2:p.Arg1031Gln      0  NP_000005.2     1031   Arg   Gln
+1   NP_000007.1:p.Asp168Gly      1  NP_000007.1      168   Asp   Gly
+2   NP_000007.1:p.Gly362Glu      1  NP_000007.1      362   Gly   Glu
+</pre></div>
+        </div>
+        <p>Checking the updated dataframe the ID, mutational position, wildtype amino acid and mutated amino acid have been added to the four specified columns.<br><br>Given it works, lets apply it to the training dataset too.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-14">train[&#x27;gene_id&#x27;], train[&#x27;aa_index&#x27;], train[&#x27;wt_aa&#x27;], train[&#x27;mt_aa&#x27;] = zip(*train[&#x27;target_id&#x27;].apply(get_id))
+
+print(train.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">                 target_id  label      gene_id aa_index wt_aa mt_aa
+0   NP_689699.2:p.Gly56Ser      0  NP_689699.2       56   Gly   Ser
+1  NP_689699.2:p.Gly665Ala      0  NP_689699.2      665   Gly   Ala
+2  NP_056473.3:p.Ala203Val      0  NP_056473.3      203   Ala   Val
+</pre></div>
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="aa-code-conversion">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>AA Code Conversion</h3>
+                        <p>The next step is to create a <strong>mutated sequence</strong> from the wildtype sequence stored in the <code>seq</code> dataframe, according to the mutational information.<br><br>However, the amino acids in the dataframes are all in three letter codes, e.g. <em>Gly</em>, while those in the amino acid sequences are all in one letter codes, e.g. G.<br><br>If we use the amino acids in a three letter representation, the generated mutated protein sequences will be wrong, e.g. sequence &quot;AIOPC&quot; with mutational information &quot;Ala1Cys&quot; (first amino acid being mutated from Alanine into Cysteine) will become &quot;CysIOPC&quot;.<br><br>Therefore, before we generate mutated protein sequences, we need to convert <code>wt_aa</code> and <code>mt_aa</code> from three letter codes into one letter codes</p><h4>Application</h4><p>This can be done simply by mapping a <em>dictionary</em> to the given column. Where the dictionary contains as its <strong>keys</strong> the three letter code and the <strong>values</strong> the equivalent single letter code.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-15"># Dict to convert amino_acid abbreviations into amino_acid_codes
+amino_acid_dict = {&#x27;CYS&#x27;: &#x27;C&#x27;, &#x27;ASP&#x27;: &#x27;D&#x27;, &#x27;SER&#x27;: &#x27;S&#x27;, &#x27;GLN&#x27;: &#x27;Q&#x27;, &#x27;LYS&#x27;: &#x27;K&#x27;,
+     &#x27;ILE&#x27;: &#x27;I&#x27;, &#x27;PRO&#x27;: &#x27;P&#x27;, &#x27;THR&#x27;: &#x27;T&#x27;, &#x27;PHE&#x27;: &#x27;F&#x27;, &#x27;ASN&#x27;: &#x27;N&#x27;,
+     &#x27;GLY&#x27;: &#x27;G&#x27;, &#x27;HIS&#x27;: &#x27;H&#x27;, &#x27;LEU&#x27;: &#x27;L&#x27;, &#x27;ARG&#x27;: &#x27;R&#x27;, &#x27;TRP&#x27;: &#x27;W&#x27;,
+     &#x27;ALA&#x27;: &#x27;A&#x27;, &#x27;VAL&#x27;:&#x27;V&#x27;, &#x27;GLU&#x27;: &#x27;E&#x27;, &#x27;TYR&#x27;: &#x27;Y&#x27;, &#x27;MET&#x27;: &#x27;M&#x27;}
+
+# When working with a singular column use map
+def convert_code(data, aa_dict):
+     &quot;&quot;&quot;00a_introduction.ipynb&quot;&quot;&quot;
+
+     # First ensure all the letters are capitalised 
+     # For this we map a lambda function that applies the string method .upper()
+     data[&#x27;wt_aa&#x27;] = data[&#x27;wt_aa&#x27;].map(lambda x: x.upper())
+     data[&#x27;mt_aa&#x27;] = data[&#x27;mt_aa&#x27;].map(lambda x: x.upper())
+
+     # Map the dictionary to the given columns
+     data[&#x27;wt_aa&#x27;] = data[&#x27;wt_aa&#x27;].map(aa_dict)
+     data[&#x27;mt_aa&#x27;] = data[&#x27;mt_aa&#x27;].map(aa_dict)
+
+
+# Call the function
+convert_code(train, amino_acid_dict)
+convert_code(test, amino_acid_dict)
+
+print(&quot;Train dataset:&quot;)
+print(train.head(3), &quot;\n&quot;)
+print(&quot;Train dataset:&quot;)
+print(test.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">Train dataset:
+                 target_id  label      gene_id aa_index wt_aa mt_aa
+0   NP_689699.2:p.Gly56Ser      0  NP_689699.2       56     G     S
+1  NP_689699.2:p.Gly665Ala      0  NP_689699.2      665     G     A
+2  NP_056473.3:p.Ala203Val      0  NP_056473.3      203     A     V 
+
+Train dataset:
+                  target_id  label      gene_id aa_index wt_aa mt_aa
+0  NP_000005.2:p.Arg1031Gln      0  NP_000005.2     1031     R     Q
+1   NP_000007.1:p.Asp168Gly      1  NP_000007.1      168     D     G
+2   NP_000007.1:p.Gly362Glu      1  NP_000007.1      362     G     E
+</pre></div>
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="merging-the-data">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Merging the data</h3>
+                        <p>Having successfully converted all amino acids into one-letter codes, we are now ready to create <strong>mutated sequences</strong> for each protein based on the corresponding wildtype sequence and mutation data.<br><br>To begin, we must <strong>merge</strong> the dataframe containing the wildtype sequence with the dataframe containing mutation information:</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-16">def merge_seq_with_mutational_info(seq_df, input_df):
+    &quot;&quot;&quot;
+    Merge sequence data with mutational information based on gene identifiers.
+
+    Parameters
+    ----------
+    seq_df : pandas.DataFrame
+        Dataframe containing protein sequence information. Must include:
+        
+        - ``gene_id`` : str
+            Gene or protein identifier (merge key)
+        - ``sequence`` : str
+            Protein sequence (will be renamed to &#x27;wt_seq&#x27;)
+        - Additional columns as needed
+    
+    input_df : pandas.DataFrame
+        Dataframe containing mutational and pathogenicity information. Must include:
+        
+        - ``gene_id`` : str
+            Gene or protein identifier (merge key)
+        - ``pathogenicity`` : any
+            Pathogenicity classification (will be renamed to &#x27;label&#x27;)
+        - Additional mutation-related columns (e.g., position, amino acid changes)
+    
+    Returns
+    -------
+    pandas.DataFrame
+        Merged dataframe with standardised column names
+    &quot;&quot;&quot;
+
+    # Merge two dataframes based on the &#x27;gene_id&#x27; column using a right join and drop rows with missing values
+    output_df = pd.merge(seq_df, input_df, on=&#x27;gene_id&#x27;, how=&#x27;right&#x27;).dropna(axis=0)
+    
+    # Rename columns &#x27;sequence&#x27; to &#x27;wt_seq&#x27; and &#x27;pathogenicity&#x27; to &#x27;label&#x27;
+    output_df.rename(columns={&#x27;sequence&#x27;: &#x27;wt_seq&#x27;, &#x27;pathogenicity&#x27;: &#x27;label&#x27;}, inplace=True)
+    
+    return output_df</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-17">merged_test = merge_seq_with_mutational_info(seq, test)</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-error">KeyError: &#x27;gene_id&#x27;</pre></div>
+        </div>
+        <p>This error is a common one for anyone looking to merge two dataframes into one. The error details that the column &quot;gene_id&quot; cannot be the key column to merge two dataframe. This is becausethe <strong>merge</strong> function needs the dataframes to share a column of the same name. However, the column with protein ids in <code>seq</code> dataframe is named as <code>NP_id</code>, while that in the <code>test</code> or <code>train</code> dataframe is named as <code>gene_id</code>.<br><br>In this case, we need to rename the column name in the <code>seq</code> dataframe for ease.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-18">seq.rename(columns={&#x27;NP_id&#x27;: &quot;gene_id&quot;}, inplace = True)
+
+print(seq.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">       gene_id                                             wt_seq
+0  NP_000005.2  MGKNKLLHPSLVLLLLVLLPTDASVSGKPQYMVLVPSLLHTETTEK...
+1  NP_000006.2  MDIEAYFERIGYKNSRNKLDLETLTDILEHQIRAVPFENLNMHCGQ...
+2  NP_000007.1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...
+</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-19">merged_test = merge_seq_with_mutational_info(seq, test)
+
+print(merged_test.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">       gene_id                                             wt_seq  \
+0  NP_000005.2  MGKNKLLHPSLVLLLLVLLPTDASVSGKPQYMVLVPSLLHTETTEK...   
+1  NP_000007.1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...   
+2  NP_000007.1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...   
+
+                  target_id  label aa_index wt_aa mt_aa  
+0  NP_000005.2:p.Arg1031Gln      0     1031     R     Q  
+1   NP_000007.1:p.Asp168Gly      1      168     D     G  
+2   NP_000007.1:p.Gly362Glu      1      362     G     E  
+</pre></div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-20">merged_train = merge_seq_with_mutational_info(seq, train)
+
+print(merged_train.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">       gene_id                                             wt_seq  \
+0  NP_689699.2  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...   
+1  NP_689699.2  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...   
+2  NP_056473.3  MAAAGSRKRRLAELTVDEFLASGFDSESESESENSPQAETREAREA...   
+
+                 target_id  label aa_index wt_aa mt_aa  
+0   NP_689699.2:p.Gly56Ser      0       56     G     S  
+1  NP_689699.2:p.Gly665Ala      0      665     G     A  
+2  NP_056473.3:p.Ala203Val      0      203     A     V  
+</pre></div>
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="generating-mutated-seqeunces">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Generating Mutated Seqeunces</h3>
+                        <p>With the merged dataframe, we can finally generate mutated sequences according to the mutational information: <code>aa_index</code> and <code>mt_aa</code>.<br><br>The function below will generate the mutation specified in the training and test datset.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-21">def create_mt_sequence(df):
+    &quot;&quot;&quot;
+    Create mutated protein sequences based on variant information in a dataframe.
+    
+    This function takes a dataframe containing wild-type sequences and mutation 
+    information, generates the corresponding mutated sequences, and adds them 
+    along with sequence length information to the dataframe.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input dataframe containing mutation information. Must include the following columns:
+        
+        - ``wt_seq`` : str
+            Wild-type (original) protein sequence
+        - ``aa_index`` : int or str
+            1-based position of the amino acid to mutate
+        - ``mt_aa`` : str
+            Single-letter code of the mutant amino acid
+        - ``target_id`` : str
+            protein identifier
+        - ``wt_aa`` : str
+            Single-letter code of the wild-type amino acid
+        - ``label`` : any
+            Label or classification for the variant
+    
+    Returns
+    -------
+    pandas.DataFrame
+        Modified dataframe with added columns and reordered structure
+    
+    &quot;&quot;&quot;
+
+    # Initialise empty lists to store mutated sequences and lengths
+    mt_sequence = []
+    length = []
+    
+    # Iterate over each row in the dataframe
+    for index, row in df.iterrows():
+        # Calculate the length of the wild-type sequence
+        seq_len = len(row[&#x27;wt_seq&#x27;])
+        
+        # Store the wild-type sequence in a variable
+        string = row[&#x27;wt_seq&#x27;]
+        
+        # Calculate the position to mutate (adjusting for 0-based indexing)
+        posn = int(row[&#x27;aa_index&#x27;]) - 1
+        
+        # Get the new amino acid to replace at the mutation position
+        new_aa = row[&#x27;mt_aa&#x27;]
+        
+        # Create the mutated sequence by replacing the amino acid at the mutation position
+        result = string[:posn] + new_aa + string[posn+1:]
+        
+        # Append the length of the wild-type sequence and the mutated sequence to the respective lists
+        length.append(seq_len)
+        mt_sequence.append(result)
+  
+    df[&#x27;mt_seq&#x27;] = mt_sequence
+    df[&#x27;Length&#x27;] = length
+    df[&#x27;Length&#x27;] = df[&#x27;Length&#x27;].apply(lambda x: int(x))
+    df[&#x27;aa_index&#x27;] = df[&#x27;aa_index&#x27;].apply(lambda x: int(x))
+
+    column_order = [&#x27;target_id&#x27;,&#x27;aa_index&#x27;,&#x27;Length&#x27;,&#x27;wt_aa&#x27;,&#x27;mt_aa&#x27;,&#x27;wt_seq&#x27;,&#x27;mt_seq&#x27;,&#x27;label&#x27;]
+    df = df[column_order]
+
+    return df</code></pre>
+            </div>
+            
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-22">train_final = create_mt_sequence(merged_train)
+print(&quot;Train mutations:&quot;)
+print(train_final.head(3), &quot;\n&quot;)
+
+test_final = create_mt_sequence(merged_test)
+print(&quot;Test mutations:&quot;)
+print(test_final.head(3))</code></pre>
+            </div>
+            <div class="output-container"><pre class="output-stream">Train mutations:
+                 target_id  aa_index  Length wt_aa mt_aa  \
+0   NP_689699.2:p.Gly56Ser        56     681     G     S   
+1  NP_689699.2:p.Gly665Ala       665     681     G     A   
+2  NP_056473.3:p.Ala203Val       203     749     A     V   
+
+                                              wt_seq  \
+0  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...   
+1  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...   
+2  MAAAGSRKRRLAELTVDEFLASGFDSESESESENSPQAETREAREA...   
+
+                                              mt_seq  label  
+0  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...      0  
+1  MSKGILQVHPPICDCPGCRISSPVNRGRLADKRTVALPAARNLKKE...      0  
+2  MAAAGSRKRRLAELTVDEFLASGFDSESESESENSPQAETREAREA...      0   
+
+</pre><pre class="output-stream">Test mutations:
+                  target_id  aa_index  Length wt_aa mt_aa  \
+0  NP_000005.2:p.Arg1031Gln      1031    1474     R     Q   
+1   NP_000007.1:p.Asp168Gly       168     421     D     G   
+2   NP_000007.1:p.Gly362Glu       362     421     G     E   
+
+                                              wt_seq  \
+0  MGKNKLLHPSLVLLLLVLLPTDASVSGKPQYMVLVPSLLHTETTEK...   
+1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...   
+2  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...   
+
+                                              mt_seq  label  
+0  MGKNKLLHPSLVLLLLVLLPTDASVSGKPQYMVLVPSLLHTETTEK...      0  
+1  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...      1  
+2  MAAGFGRCCRVLRSISRFHWRSQHTKANRQREPGLGFSFEFTEQQK...      1  
+</pre></div>
+        </div>
+        <p>Calling the function on both the <em>train</em> and <em>test</em> dataset generates our enriched dataset. These can be saved as a <strong>csv</strong> for use in subseqeunt sections.</p>
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-23">train_final.to_csv(&quot;./data/processed_train.csv&quot;, index=False)
+test_final.to_csv(&quot;./data/processed_test.csv&quot;, index=False)</code></pre>
+            </div>
+            
+        </div>
+        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="summary">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Summary</h3>
+                        <p>We are now at the end of our data pre-processing step and are ready to move on to the featurisation step in the next section using a protein language model. This step will involve leveraging one of the most powerful protein language models, <strong>ESM1b</strong>, to extract meaningful features from the processed protein sequence data.</p>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <div class="page-navigation">
+            <a href="./introduction.html" class="nav-button prev">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                Previous
+            </a>
+            <a href="./language-models-basics.html" class="nav-button next">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+            </a></div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© All materials are copyright scryptIQ 2025</div>
+            <div>Static Notebook - Pre-executed Content</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/main.js"></script>
+    
+    <!-- Initialize syntax highlighting -->
+    <script>
+        // Set page ready flag immediately for PDF generation
+        window.pageReady = true;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>
+    
