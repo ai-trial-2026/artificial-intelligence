@@ -81,6 +81,7 @@
         </h3>
         <div class="collapsible-content collapsed">
             <ul>
+            <li><a href="../AI0/introduction.html">AI0</a></li>
             <li><a href="../AI1/introduction.html">AI1</a></li>
             <li><a href="../AI2/introduction.html">AI2</a></li>
             <li><a href="../AI3/introduction.html">AI3</a></li>
@@ -104,8 +105,8 @@
                 <a href="../homepage.html" class="text-button" title="Materials homepage">
                     Homepage
                 </a>
-                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
-                    Learn to Discover
+                <a href="https://scryptiq.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    scryptIQ
                 </a>
             </div>
         </div>
@@ -119,7 +120,7 @@
                 <div class="module-body">
                     <div class="module-section">
                         <h3>Assignment Background:</h3>
-                        <p>As testers you don&#x27;t have much time, so please feel free to just attempt what you can. A difficult part is gauging the difficulty of an assignment to not bee too easy, too difficult, or too long.<br>The aim of this assignment is to have you engage in a hands on manner with different sections. Due to the constraint of generating embeddings you will be unable to work with a new dataset.</p>
+                        <p>Timely submission will result in your assignment being returned within 14 days of the submission deadline. Marked Jupyter Notebook manuscripts will be returned with comments from your marker. If you receive a pass or distinction, your marker will attach the model solutions for this assignment <em>via</em> the open pull request on your lesson&#x27;s GitHub repository.<br>The aim of this assignment is to have you engage in a hands-on manner with different sections. Due to the constraint of generating embeddings you will be unable to work with a new dataset.</p>
                     </div>
                 </div>
             </div>
@@ -128,7 +129,7 @@
                 <div class="module-body">
                     <div class="module-section">
                         <h3>Question 1:</h3>
-                        <p>Things move fast in the machine learning world. The <strong>ESM1b</strong> model was created in <em>2021</em>, however it was surplanted in the next year by the <strong>ESM2</strong> model.<br><br>Head to the card of the <a href="https://huggingface.co/facebook/esm2_t33_650M_UR50D"><strong>ESM2</strong></a> model on the <strong>Hugging Face</strong> website. You will see if you scroll down that there are multiple versions of the model, with varying layers and parameters, the largest having 15 billion.<br><br>We would like you to load the <strong>esm2_t33_650M_UR50D</strong> model into memory, which has comparable parameters to the <strong>ESM1b</strong> model.</p>
+                        <p>Things move fast in the machine learning world. The <strong>ESM1b</strong> model was created in <em>2021</em>, however it was supplanted in the next year by the <strong>ESM2</strong> model.<br><br>Head to the card of the <a href="https://huggingface.co/facebook/esm2_t33_650M_UR50D"><strong>ESM2</strong></a> model on the <strong>Hugging Face</strong> website. You will see if you scroll down that there are multiple versions of the model, with varying layers and parameters, the largest having 15 billion.<br><br>We would like you to load the <strong>esm2_t33_650M_UR50D</strong> model into memory, which has comparable parameters to the <strong>ESM1b</strong> model.</p>
                     </div>
                 </div>
             </div>
@@ -137,7 +138,7 @@
                 <div class="module-body">
                     <div class="module-section">
                         <h3>Question 2:</h3>
-                        <p>Using the <strong>ESM2</strong> model and tokensier you have just downloaded, create a function that takes a list of protein sequences and a list of amino acid positions as input and returns the embeddings of the amino acids at the specified positions in the sequences. For example, the input [&#x27;ACFGPLOIE&#x27;, &#x27;MOPDEYTWK&#x27;] and [1, 3, 5] should return the embeddings of the amino acids at positions 1, 3, and 5 in the sequences.<br><br>Please find the sequences in the csv file <code>assignment_sequences.csv</code> in the <code>data</code> folder.<br><br>For the assignment, create a function that generates whole sequences embeddings and finds the amino acids embeddings at position <strong>24</strong> and <strong>102</strong>. Not all the sequences are long enough to have an amino acid at position 102, so you should only return the embeddings for the sequences that have an amino acid at position 102. Store the pair of embeddings in a list, appending it to another list for each sequence.<br><br><em>Note: The positions are <strong>not</strong> given as zero based indexing</em></p>
+                        <p>Using the <strong>ESM2</strong> model and tokeniser you have just downloaded, create a function that takes the following input arguments:<br><ul class="nested-list"><li>a list of protein sequences</li><br><li>a list of amino acid positions</li></ul>and returns the <strong>embeddings of the amino acids at those positions</strong> for each sequence.<br><br>For example, given the sequences: <code>[&#x27;ACFGPLVIE&#x27;, &#x27;MAPDEYTWK&#x27;]</code> and the positions: <code>[1, 3, 5]</code>, your function should return the embeddings of the amino acids at <strong>positions 1, 3, and 5</strong> in each sequence.<br><ul class="nested-list"><li>Create a function that generates whole-sequence embeddings and finds the amino acid residue embeddings at positions <strong>24</strong> and <strong>102</strong>. Since not all sequences are long enough to have a residue at position 102, your function should only return embeddings for sequences that have a residue at <strong>both</strong> positions.</li><br><li>Store the pair of embeddings in a Python list, appending these to another list for each qualifying sequence.</li></ul><em>Note: the amino acid positions above are <strong>1-based</strong> (i.e. position 1 is the first amino acid). Because the ESM tokeniser prepends a special <code>[CLS]</code> token at index 0, the amino acid at 1-based position N sits at tensor index N in <code>last_hidden_state</code>. So no index adjustment is required.</em></p>
                     </div>
                 </div>
             </div>
@@ -145,8 +146,16 @@
             <div class="module-card" id="question-3">
                 <div class="module-body">
                     <div class="module-section">
-                        <h3>Question 3</h3>
-                        <p>Supervised machine learning is not the only way to explore data. Dimensionality reduction can, such as <strong>principle conponent analysis</strong> or <strong>TSNE</strong>, can also be applied to find clusters in a high dimensional dataset.<br><br><strong>Tasks</strong><ul class="nested-list"><li>Load in the test dataset, as seen in the <strong>evaluation</strong> section.</li><br><li>Reduce the <strong>2560</strong> embedding to <strong>2 dimensions</strong> for plotting</li><ul class="nested-list"><li>Do this using the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">PCA</a> function from sklearn</li><br><li>And with the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html">TSNE</a> function from sklearn</li></ul></li><br><li>Turn both of the reductions into a <em>pandas</em> dataframe with columns: &quot;Dim1&quot;, &quot;Dim2&quot;, &quot;gene_ids&quot;, &quot;labels&quot; (y)</li><br><li>Use the dataframes and seaborn to create a scatterplot of the two dimensions, coloured by the labels</li><br><li>Create a plot for both using the seaborn <a href="https://seaborn.pydata.org/generated/seaborn.jointplot.html">joinplot</a> with kind &quot;kde&quot;</li></ul></p>
+                        <h3>Question 3:</h3>
+                        <p>A single accuracy score can obscure meaningful patterns in model performance. Some genes may have many correctly classified variants whilst others are consistently misclassified. This could reflect genuine biological complexity, biases in the training data, or limitations of the embedding representation.<br><br>Using the pre-computed test embeddings and the trained model:<br><br><strong>Task 1:</strong><br><ul class="nested-list"><li>The test data has been loaded in for you and the gene IDs extracted using regex, saved as the variable <code>gene_ids</code></li><br><li>Reload the trained model from <code>./data/best_embedding_model.pt</code>, recreating the <code>MLP_LeakyReLu_binary</code> class and <code>predict</code> function from the classification section</li><br><li>Run predictions on the test set using a threshold of <strong>0.19</strong></li><br><li>Build a results DataFrame  containing: <code>target_id</code>, <code>gene_id</code>, <code>y_true</code>, <code>y_predict</code></li><ul class="nested-list"><li>Assign it to a variable names <code>results</code></li><br><li>Create a new column which finds misclassified predictions</li></ul></ul><strong>Task 2:</strong><br><br>Group by <code>gene_id</code> and calculate, for each gene: total variants, number misclassified, and misclassification rate<br><br>To find the count and sum use pandas <code>.groupby()</code> which will find summary statistics or functions to data in the same category (see below):<br><br><pre class="markdown-code-block"><code># Per-gene summary
+per_gene = (
+    results.groupby(&#x27;gene_id&#x27;)
+    .agg(
+        total_variants   = (&#x27;misclassified&#x27;, &#x27;count&#x27;),
+        n_misclassified  = (&#x27;misclassified&#x27;, &#x27;sum&#x27;)
+    )
+    .reset_index()
+)</code></pre><br><br>After, calculate the misclassification rate from the count (&quot;total_variants&quot;) and sum (&quot;n_misclassified&quot;)<br><br>Display the <strong>10 genes with the highest misclassification rates</strong><br><br><strong>Task 3:</strong><br><br>Produce a <strong>bar chart</strong> of misclassification rates:<ul class="nested-list"><li>Restrict the data to only genes with <strong>at least 5 variants</strong> in the test set</li><br><li>Plot the misclassification rate column</li><br><li>Plot a dashed, grey, line at 50% to indicate genes with a higher error rate</li><br><li>Give the plot appropriate axis labels and title</li></ul></p>
                     </div>
                 </div>
             </div>
