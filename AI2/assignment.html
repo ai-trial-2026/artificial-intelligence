@@ -81,6 +81,7 @@
         </h3>
         <div class="collapsible-content collapsed">
             <ul>
+            <li><a href="../AI0/introduction.html">AI0</a></li>
             <li><a href="../AI1/introduction.html">AI1</a></li>
         </ul>
         </div>
@@ -102,8 +103,8 @@
                 <a href="../homepage.html" class="text-button" title="Materials homepage">
                     Homepage
                 </a>
-                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
-                    Learn to Discover
+                <a href="https://scryptiq.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    scryptIQ
                 </a>
             </div>
         </div>
@@ -113,6 +114,60 @@
                     Assignment <span class="module-tag">AI2</span>
                 </div>
             </div>
+            <div class="module-card" id="assignment-background">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Assignment Background:</h3>
+                        <p>In this assignment you will apply everything covered in the lesson to a new medical imaging problem. You will design, train, and evaluate your own CNN from scratch, making your own decisions about architecture, training strategy, and how to interpret your results.<br>This assignment uses the <strong>PneumoniaMNIST</strong> dataset, which contains black-and-white chest X-rays with a binary classification task: <strong>Pneumonia</strong> or <strong>No Pneumonia</strong>.<br><br>The dataset is split as follows:<ul class="nested-list"><li><strong>Training set:</strong> 4,708 images</li><br><li><strong>Validation set:</strong> 524 images</li><br><li><strong>Test set:</strong> 624 images</li></ul>The images are <strong>1 channel</strong> (greyscale) and <strong>28×28 pixels</strong>, consistent with the MedMNIST format used in the case study.<br><br>This data is made available by <em>Daniel S. Kermany, Michael Goldbaum, et al., &quot;Identifying medical diagnoses and treatable diseases by image-based deep learning,&quot; Cell, vol. 172, no. 5, pp. 1122–1131.e9, 2018.</em></p><h4>Important!</h4><p>The code given to you will download the <em>PneumoniaMNIST</em> into your CodeSpace workspace. This file is too large to be hosted on GitHub and will cause an error when you try to push your assignment back. Please remember to <strong>delete</strong> the data before you do. If you do accidentally push your assignment back with the data you will need to firstly <em>delete</em> the data and then go through your git history and delete its reference there.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="assignment-questions">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Assignment Questions:</h3>
+                        <p>The data loading code is provided below — the design, training, and evaluation are up to you.<br><br>The overall aim is to build a CNN that <strong>catches as many pneumonia cases as possible</strong>. In a clinical setting, a missed positive (a patient with pneumonia classified as healthy) is far more serious than a false alarm. This means your primary metric is <strong>recall</strong> (also called sensitivity): the proportion of true pneumonia cases that your model correctly identifies.<br><br>That said, a model that simply predicts <em>pneumonia</em> for every patient would have perfect recall but be clinically useless. You should therefore also report <strong>precision</strong> (the proportion of positive predictions that are actually correct) to show your model is not just guessing positive every time. The <strong>F1 score</strong> balances the two.<br><br><strong>Your submission should include the following steps:</strong><br><br><strong>Step 1 — Explore the data</strong><br>Plot a sample of images from the training set, with their labels. Check the class balance (how many pneumonia vs. non-pneumonia cases are there?).<br><br><strong>Step 2 — Design a CNN</strong><br>Define a CNN architecture suited to this problem. Consider:<ul class="nested-list"><li>The input has <strong>1 channel</strong> and images are <strong>28×28</strong></li><br><li>The output should have <strong>2 classes</strong></li><br><li>You may use BatchNorm and Dropout as introduced in the case study</li></ul><strong>Step 3 — Train the model</strong><br>Train your model using the training and validation loaders. Implement early stopping and a learning rate scheduler as demonstrated in the case study.<br>Plot the training and validation loss curves.<br><br><strong>Tip:</strong> Try a small number of epochs first to see how long it takes; scale accordingly.<br><br><strong>Step 4 — Evaluate on the test set</strong><br>Using the test set, produce:<ul class="nested-list"><li>A <strong>confusion matrix</strong> (use the function provided)</li><br><li>An ROC curve with AUC scores</li><br><li><strong>Recall</strong>, <strong>precision</strong>, and <strong>F1 score</strong> for each class</li><ul class="nested-list"><li>Use the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html">classification report</a> function from SKLearn</li></ul></ul></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="step-1---explore-the-data">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Step 1 — Explore the data</h3>
+                        <p>Plot a sample of images from the training set with their labels. Check the class balance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="step-2---design-a-cnn">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Step 2 — Design a CNN</h3>
+                        <p>Define your <code>CNN</code> class below. Remember:<ul class="nested-list"><li>Input: <code>1</code> channel, <code>28×28</code> images</li><br><li>Output: <code>2</code> classes</li><br><li>Use the explicit <code>forward()</code> pattern from the lesson (call each layer directly)</li></ul>Confirm your model is working by feeding it some dummy data.<ul class="nested-list"><li>Additionally, show how many trainable parameters your model has</li></ul></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="step-3---train-the-model">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Step 3 — Train the model</h3>
+                        <p>Train your model using the training and validation loaders. Use early stopping and a learning rate scheduler as shown in the case study. Plot the training and validation loss curves.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="step-4---evaluate-on-the-test-set">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Step 4 — Evaluate on the test set</h3>
+                        <p>Collect predictions on the full test set, then produce a confusion matrix, ROC-AUC plot, and report recall, precision, and F1 score per class.</p>
+                    </div>
+                </div>
+            </div>
+            
         
         <div class="page-navigation">
             <a href="./pre-trained-software.html" class="nav-button prev">

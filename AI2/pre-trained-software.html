@@ -64,7 +64,7 @@
                     Biological CNN software
                     <span class="toggle-icon">▼</span>
                 </div>
-                <ul class="nested-nav expanded" id="expandable-section-4"><li><a href="#introduction">Introduction</a></li><li><a href="#biological-image-software">Biological Image Software</a></li><li><a href="#downloading-pre-trained-modles">Downloading Pre-trained Modles</a></li>
+                <ul class="nested-nav expanded" id="expandable-section-4"><li><a href="#introduction">Introduction</a></li><li><a href="#biological-image-software">Biological Image Software</a></li><li><a href="#downloading-pre-trained-models">Downloading Pre-trained Models</a></li>
                 </ul>
             </li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
         </ul>
@@ -85,6 +85,7 @@
         </h3>
         <div class="collapsible-content collapsed">
             <ul>
+            <li><a href="../AI0/introduction.html">AI0</a></li>
             <li><a href="../AI1/introduction.html">AI1</a></li>
         </ul>
         </div>
@@ -106,8 +107,8 @@
                 <a href="../homepage.html" class="text-button" title="Materials homepage">
                     Homepage
                 </a>
-                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
-                    Learn to Discover
+                <a href="https://scryptiq.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    scryptIQ
                 </a>
             </div>
         </div>
@@ -131,14 +132,14 @@
                 </div>
             </div>
             
-            <div class="module-card" id="downloading-pre-trained-modles">
+            <div class="module-card" id="downloading-pre-trained-models">
                 <div class="module-body">
                     <div class="module-section">
-                        <h3>Downloading Pre-trained Modles</h3>
+                        <h3>Downloading Pre-trained Models</h3>
                         <p>When you need a pre-trained model for transfer learning or as a starting point for your own work, there are several ways to download them. Here we&#x27;ll cover the traditional PyTorch Hub approach and then introduce the more modern ecosystem around Hugging Face and TIMM.</p><h4>PyTorch Hub</h4><p>PyTorch Hub is a pre-trained model repository designed to facilitate research reproducibility. It provides a simple API to load models with their pre-trained weights directly from GitHub repositories.<br><br>The basic concept is straightforward: you use <code>torch.hub.load()</code> to download and instantiate a model in a single line of code. The function takes three main arguments:<br><ol class="nested-list"><li>The GitHub repository (in the format <code>owner/repo:branch</code>)</li><br><li>The model name</li><br><li>Whether to use pre-trained weights</li></ol></p><p>Here&#x27;s a simple example loading a ResNet-18 model:</p>
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-40">import torch
+                <pre><code class="language-python" id="code-44">import torch
 
 # Load a pre-trained ResNet-18 model from PyTorch&#x27;s official repository
 model = torch.hub.load(&#x27;pytorch/vision:v0.10.0&#x27;, &#x27;resnet18&#x27;, pretrained=True)</code></pre>
@@ -146,19 +147,29 @@ model = torch.hub.load(&#x27;pytorch/vision:v0.10.0&#x27;, &#x27;resnet18&#x27;,
             
         </div>
         
+        <div class="info-box note-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                NOTE
+            </div>
+            <div class="box-content">
+                <p>The <code>pretrained=True</code> argument used above is correct for <code>pytorch/vision:v0.10.0</code> but is deprecated in newer versions of torchvision (&gt;= 0.13), which prefer <code>weights=&#x27;DEFAULT&#x27;</code>. This is one of the practical limitations of PyTorch Hub, the API can vary across repository versions. The TIMM approach shown below provides a more consistent interface.</p>
+            </div>
+        </div>
+        
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-41">print(f&quot;Model loaded: {model.__class__.__name__}&quot;)
+                <pre><code class="language-python" id="code-45">print(f&quot;Model loaded: {model.__class__.__name__}&quot;)
 print(f&quot;Number of parameters: {sum(p.numel() for p in model.parameters()):,}&quot;)</code></pre>
             </div>
             <div class="output-container"><pre class="output-stream">Model loaded: ResNet
 Number of parameters: 11,689,512
 </pre></div>
         </div>
-        <p>While PyTorch Hub is convenient, it has some limitations: the repository structure can be inconsistent across different model sources, and the ecosystem is somewhat fragmented.</p><h4>Hugging Face Hub and TIMM</h4><p>The current approach to downloading pre-trained models centers around <strong>Hugging Face Hub</strong> a pltform for Machine Learning models, and specifically for PyTorch, <strong>TIMM</strong>, a library for computer vision models.<br><br><a href="https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file#introduction"><strong>TIMM</strong></a> provides a consistent, unified API for hundreds of computer vision models. Rather than dealing with different repositories and inconsistent interfaces, TIMM has a single <code>timm.create_model()</code> function for creating a model given a named architecture and can also come with their pre-trained weights (<em>see the example below</em>).<br><br><strong>Hugging Face Hub</strong> has become the de facto standard for sharing and discovering models across all domains. While it started with natural language processing, it now hosts all types of models for every field. Within Hugging Face each model comes complete with with documentation, training details, and usage examples. AS well as version control and lineage tracking, like GitHub.</p><p>Here&#x27;s how you would use TIMM to load a model:</p>
+        <p>While PyTorch Hub is convenient, it has some limitations: the repository structure can be inconsistent across different model sources, and the ecosystem is somewhat fragmented.</p><h4>Hugging Face Hub and TIMM</h4><p>The current approach to downloading pre-trained models centers around <strong>Hugging Face Hub</strong> a platform for Machine Learning models, and specifically for PyTorch, <strong>TIMM</strong>, a library for computer vision models.<br><br><a href="https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file#introduction"><strong>TIMM</strong></a> provides a consistent, unified API for hundreds of computer vision models. Rather than dealing with different repositories and inconsistent interfaces, TIMM has a single <code>timm.create_model()</code> function for creating a model given a named architecture and can also come with their pre-trained weights (<em>see the example below</em>).<br><br><strong>Hugging Face Hub</strong> has become the de facto standard for sharing and discovering models across all domains. While it started with natural language processing, it now hosts all types of models for every field. Within Hugging Face each model comes complete with documentation, training details, and usage examples, as well as version control and lineage tracking, like GitHub.</p><p>Here&#x27;s how you would use TIMM to load a model:</p>
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-42">import timm
+                <pre><code class="language-python" id="code-46">import timm
 
 import warnings
 warnings.filterwarnings(&quot;ignore&quot;) # ignore warnings
@@ -171,7 +182,7 @@ available_models = timm.list_models(&#x27;resnet*&#x27;, pretrained=True)</code>
         
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-43">print(f&quot;Found {len(available_models)} pre-trained ResNet variants&quot;)
+                <pre><code class="language-python" id="code-47">print(f&quot;Found {len(available_models)} pre-trained ResNet variants&quot;)
 print(f&quot;Examples: {available_models[:5]}&quot;)</code></pre>
             </div>
             <div class="output-container"><pre class="output-stream">Found 130 pre-trained ResNet variants
@@ -181,7 +192,7 @@ Examples: [&#x27;resnet10t.c3_in1k&#x27;, &#x27;resnet14t.c3_in1k&#x27;, &#x27;r
         
         <div class="code-area">
             <div class="code-container code-fixed">
-                <pre><code class="language-python" id="code-44"># Load a pre-trained model
+                <pre><code class="language-python" id="code-48"># Load a pre-trained model
 model = timm.create_model(&#x27;resnet18&#x27;, pretrained=True)
 
 # Get model-specific preprocessing configuration
@@ -190,13 +201,42 @@ print(f&quot;\nInput size: {data_config[&#x27;input_size&#x27;]}&quot;)
 print(f&quot;Mean: {data_config[&#x27;mean&#x27;]}&quot;)
 print(f&quot;Std: {data_config[&#x27;std&#x27;]}&quot;)</code></pre>
             </div>
-            <div class="output-container"><pre class="output-stream">
+            <div class="output-container"><pre class="output-stderr">Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+</pre><pre class="output-stream">
 Input size: (3, 224, 224)
 Mean: (0.485, 0.456, 0.406)
 Std: (0.229, 0.224, 0.225)
 </pre></div>
         </div>
-        <p>Models can also be downloaded directly from the <a href="https://huggingface.co/docs/hub/en/models-downloading">Huggingface Hub</a>, as many users are uploading more tailored models there all the time. However, you will have to be more dilegent with understanding of how the model was trained and its potential pitfalls.</p>
+        <p>Models can also be downloaded directly from the <a href="https://huggingface.co/docs/hub/en/models-downloading">Hugging Face Hub</a>, as many users are uploading more tailored models there all the time. Additionally, there are specific packages for different types of models. For example in <strong>AI4</strong> we will be using the <strong>Transformers</strong> package to download pre-trained language models.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="downloading-pre-trained-models">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Downloading Pre-trained Models</h3>
+                        
+        <div class="info-box practice-exercise-box">
+            <div class="box-title">
+                <span class="box-icon"></span>
+                PRACTICE EXERCISE
+            </div>
+            <div class="box-content">
+                <p><strong>1.</strong></p>
+                <p>Download the notebook and use TIMM to load a <code>resnet50</code> model instead of <code>resnet18</code>. Print the number of parameters for both models. How many times larger is ResNet-50?<br>Also compare the preprocessing configurations returned by <code>timm.data.resolve_model_data_config</code> for both architectures. Do they differ?<br>Given the size difference, what are the practical implications of choosing ResNet-50 over ResNet-18 for a small biological imaging dataset?</p>
+            </div>
+        </div>
+        
+        <div class="code-area">
+            <div class="code-container code-fixed">
+                <pre><code class="language-python" id="code-49"># Write your code here:
+</code></pre>
+            </div>
+            
+        </div>
+        
                     </div>
                 </div>
             </div>
