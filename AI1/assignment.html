@@ -62,7 +62,7 @@
 
         <h3>Content</h3>
         <ul>
-            <li><a href="./introduction.html" class="">Introduction</a></li><li><a href="./what-is-a-mlp.html">The Multi-Layer Pereceptron</a></li><li><a href="./training.html">Training a MLP</a></li><li><a href="./testing-inference.html">Testing & Inference</a></li><li><a href="./further-reading.html">Further Reading</a></li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
+            <li><a href="./introduction.html" class="">Introduction</a></li><li><a href="./what-is-a-mlp.html">The Multi-Layer Perceptron</a></li><li><a href="./training.html">Training a MLP</a></li><li><a href="./testing-inference.html">Testing & Inference</a></li><li><a href="./pytorch-implementation.html">Case Study</a></li><li><a href="./further-reading.html">Further Reading</a></li><li><a href="./assignment.html">Assignment</a></li><li><a href="./feedback.html">Feedback</a></li>
         </ul>
 
         <h3 class="collapsible-header collapsed">
@@ -73,6 +73,16 @@
             <ul>
                 <li><a href="./glossary.html">Glossary</a></li><li><a href="./downloads.html">Downloads</a></li><li><a href="../HB/introduction.html">Handbook</a></li>
             </ul>
+        </div>
+
+        <h3 class="collapsible-header collapsed">
+            Previous Modules
+            <span class="collapse-icon">►</span>
+        </h3>
+        <div class="collapsible-content collapsed">
+            <ul>
+            <li><a href="../AI0/introduction.html">AI0</a></li>
+        </ul>
         </div>
 
         <h3>
@@ -92,8 +102,8 @@
                 <a href="../homepage.html" class="text-button" title="Materials homepage">
                     Homepage
                 </a>
-                <a href="https://learntodiscover.ai/my-cohorts/" class="text-button" title="Find out more about us">
-                    Learn to Discover
+                <a href="https://scryptiq.ai/my-cohorts/" class="text-button" title="Find out more about us">
+                    scryptIQ
                 </a>
             </div>
         </div>
@@ -107,20 +117,43 @@
                 <div class="module-body">
                     <div class="module-section">
                         <h3>Assignment Background:</h3>
-                        <p>As testers you don&#x27;t have much time, so please feel free to just attempt what you can. A difficult part is gauging the difficulty of an assignment to not bee too easy, too difficult, or too long.<br><br>This assignments aim is to get you actively creating and experimenting with the architecture of a multi layer perceptron (MLP).<br><br>For this assignment, we will be using the MNIST handwritten digits dataset. The dataset has been split into two parts:<ul class="nested-list"><li><strong>Training set (60,000 images)</strong>: Used to train the model by updating weights</li><br><li><strong>Test set (10,000 images)</strong>: Used to evaluate final model performance</li></ul></p>
+                        <p>Timely submission will result in your assignment being returned within 14 days of the submission deadline. Marked Jupyter Notebook manuscripts will be returned with comments from your marker. If you receive a pass or distinction, your marker will attach the model solutions for this assignment <em>via</em> the open pull request on your lesson&#x27;s GitHub repository.<br>This assignments aim is to combine everything you have learned in this lesson. However, do not worry about creating the perfect neural net. Instead, the idea is to have you actively using and implementing a neural net for a new task.<br><br>In your <code>data</code> folder there is a tabular dataset with measurements from differing forests, the aim is to predict the forest cover type from just these cartographic variables. The dataset is made publicly available from <a href="https://archive.ics.uci.edu/dataset/31/covertype">UC Irvine</a>.<br><br>The dataset will be loaded in for you via pre-filled code cells in the assignment notebook.<br><br><em>Note: The dataset when loaded from the given file does not come with any column headings, which can be a bit disconcerting. However, it is a good example of how neural networks will work even without an understanding of the features</em></p>
                     </div>
                 </div>
             </div>
             
-            <div class="module-card" id="assignment-questions">
+            <div class="module-card" id="question-1">
                 <div class="module-body">
                     <div class="module-section">
-                        <h3>Assignment Questions:</h3>
-                        <h4>Question 1: Create Three Different MLP Architectures</h4><p>The MNIST data has already been loaded and split for you (see the cells below).<br><br>Your task is to <strong>complete the three MLP class definitions</strong> (<code>MLP_1</code>, <code>MLP_2</code>, and <code>MLP_3</code>) provided in the code cells.<br>Use the <code>example_MLP</code> class given in the cell below as a guide for the structure.<br><br>Each of your three MLPs should explore a <strong>different architectural variation</strong>:<br><br><strong>MLP_1 - Deeper Network</strong>:<ul class="nested-list"><li>Add <em>more hidden layers</em> (aim for 4-5 hidden layers total).</li><br><li>Keep the <em>same activation function</em> (ReLU) and <em>hidden layer size</em> (512 neurons) as the example.</li></ul><strong>MLP_2 - Different Activation</strong>:<ul class="nested-list"><li>Keep the <em>same depth</em> as the example (2 hidden layers).</li><br><li>Use <strong>Tanh</strong> activation instead of ReLU throughout the hidden layers.</li></ul><strong>MLP_3 - Wider Network</strong>:<ul class="nested-list"><li>Keep the <em>same depth</em> (2 hidden layers) and activation function (ReLU) as the example.</li><br><li>Increase the <em>number of neurons per hidden layer</em> to 1000 instead of 512.</li></ul><strong>Available activation functions:</strong><ul class="nested-list"><li><code>nn.ReLU()</code> - <a href="https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html">Documentation</a></li><br><li><code>nn.Tanh()</code> - <a href="https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html">Documentation</a></li><br><li><code>nn.Sigmoid()</code> - <a href="https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html">Documentation</a></li></ul>&gt; <strong>NOTE:</strong> Always keep <code>nn.Softmax(dim=1)</code> as the final activation (this is already given in the starter code).<br><br><strong>What to modify:</strong><ul class="nested-list"><li>In <code>__init__</code>: Add or keep <code>nn.Linear()</code> layers as needed</li><br><li>In <code>forward()</code>: Add or keep the corresponding activation functions between linear layers</li><br><li>The hidden layer size will be set when you instantiate the models in <strong>Question 2</strong></li></ul></p><h4>Question 2: Train and Evaluate Your Models</h4><p><strong>Part A: Complete the Model Dictionary</strong><br><br>In the code cell below create a <em>dictionary</em> called <code>model_dict</code> where each model is instantiated and assigned a descriptive name.<br><ul class="nested-list"><li>Ensure each model is initialised with the same <strong>input size</strong> and <strong>output size</strong></li></ul>All models should have <code>input_size=784</code> (flattened 28×28 images) and <code>output_size=10</code> (10 digit classes).<br><strong>Part B: Training and Testing Functions</strong><br><br>The <code>train()</code> and <code>test()</code> functions given in the lesson materials are provided below.<br><br>Review these functions to understand:<br><ul class="nested-list"><li><code>train()</code>: Updates model weights using training data</li><br><li><code>test()</code>: Evaluates model performance on test data without updating weights</li></ul><strong>Your task:</strong> Rather than simply printing the result, <em>edit</em> the <code>test()</code> function to <strong>return</strong> these three values, in this order:<br><ul class="nested-list"><li><code>correct</code></li><br><li><code>accuracy</code></li><br><li><code>test_loss</code></li></ul><strong>Part C: Train All Models</strong><br><br><strong>Your task:</strong> Complete the training loop in the code cell below.<br><br>The loop should do the following:<ol class="nested-list"><li>Iterate through each model in <code>model_dict</code></li><br><li>For each model:</li><ul><li>Create an SGD optimiser with <code>lr=0.01</code> and <code>momentum=0.5</code></li><br><li>Train for <strong>6 epochs</strong>, calling <code>train()</code> in each epoch</li><br><li>After training completes, call <code>test()</code> on the test dataset</li><br><li>Store the test results in a dictionary called <code>results</code></li></ul></ol>The <code>results</code> dictionary should have this structure:<br><br><pre class="markdown-code-block"><code>results[model_name] = {
-    &#x27;Accuracy&#x27;: accuracy,
-    &#x27;N. correct (10,000)&#x27;: correct,
-    &#x27;Test Loss&#x27;: test_loss
-}</code></pre><br><br>After the training loop, print the results for each model in a clear format.<br><br><strong>Note:</strong> We use the following <em>separate</em> datasets:<ul class="nested-list"><li><strong>Training set</strong> (60,000 images): Used to update model weights during training</li><br><li><strong>Test set</strong> (10,000 images): Used to monitor progress during training (optional)</li></ul></p>
+                        <h3>Question 1</h3>
+                        <p><strong>Part A</strong><br><br>Explore the dataset we have given to you, <code>X</code> = the data, <code>y</code> = the target variable:<ul class="nested-list"><li>View the X and y data and check for missing values</li><br><li>The target (y) categories start from 1 through to 7. Our machine learning models expect the categories to start from 0 onwards. Please alter all the data in <code>y</code> to be one less. I.e. 1 -&gt; 0, 2 -&gt; 1, 3 -&gt; 2, etc.</li></ul><strong>Part B</strong><br><br>Split the data into your test, train datasets:<ul class="nested-list"><li>Use the sklearn function <code>train_test_split</code></li><br><li>Use an appropriate test size</li><br><li>Both shuffle and stratify the datasets</li><br><li>Print the shape of both train and test dataset to confirm</li></ul></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="question-2">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Question 2</h3>
+                        <p><strong>Part A</strong><br><br>Create a subclassed <code>Dataset</code> class to store the tabular data, to be given to the <code>DataLoader</code> class.<ul class="nested-list"><li>Create a class called <code>SimpleTabularDataset</code> that subclasses PyTorch&#x27;s <code>Dataset</code> (see the materials for help).</li><br><li>Create a dataset for both the train and test data</li><br><li>Give them as arguments to the <code>DataLoader</code> class from PyTorch</li><ul class="nested-list"><li>Use appropriate batch sizes for each</li></ul></ul><strong>Part B</strong><br><br>Create an MLP class using the techniques shown in this lesson<ul class="nested-list"><li>You are free to use how many layers you like</li><br><li>As well as any activation function</li><br><li><strong>Do not</strong> include a softmax layer as we will be using <code>nn.CrossEntropyLoss()</code> later</li><br><li>Use some random data to test the model is functioning properly</li></ul>It would be good to experiment with different architectures. However, for submission please only give one. You will be marked solely on a functioning model, not how it performs.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="question-3">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Question 3</h3>
+                        <p><strong>Part A</strong><br><br><strong>Training and Testing Functions</strong><br><br>The <code>train()</code> and <code>test()</code> functions given in the lesson materials are provided below with some modifications or missing parts.<br><br>Review these functions and modify them as so:<br><br><code>train()</code><ul class="nested-list"><li>The loss is now calculated by the <code>F.cross_entropy()</code> function</li><br><li>The training loss is captured per batch to give the loss for the epoch</li><br><li>Return the loss from the <code>train</code> function (remember to get the average loss, not total!)</li></ul><code>test()</code><ul class="nested-list"><li>The loss is now calculated by the <code>F.cross_entropy()</code> function</li></ul>To obtain the average loss from the batch, please use the following code:<br><pre class="markdown-code-block"><code>batch_loss = loss.item()*data.size(0)</code></pre><br><strong>Part B</strong><br><br><strong>Initialise and Train the model</strong><br><ul class="nested-list"><li>Set the device for the workspace using the code given below</li><br><li>Initialise the model and move to the device</li><br><li>Setup the optimiser for the training</li><ul class="nested-list"><li>Use the <a href="https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html">Adam optimiser</a> instead of SGD</li><br><li>Use a learning rate of <code>0.001</code></li></ul></li><br><li>Write and call the training loop</li><ul class="nested-list"><li>Call the training for 10 epochs</li><br><li>Append the losses for train and test to their own lists outside the loop</li></ul></ul></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-card" id="question-4">
+                <div class="module-body">
+                    <div class="module-section">
+                        <h3>Question 4</h3>
+                        <p>Plot the losses for both the training and test data over the epochs:<ul class="nested-list"><li>Use matplotlib for your plot</li><br><li>The x-axis will be time (epochs)</li><br><li>The y-axis the loss</li></ul>Do you notice anything from the plot?</p>
                     </div>
                 </div>
             </div>
