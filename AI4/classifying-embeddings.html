@@ -371,11 +371,11 @@ output = model(tmp_input)
 
 print(output[:5])</code></pre>
             </div>
-            <div class="output-container"><pre class="output-stream">tensor([[0.4312],
-        [0.4675],
-        [0.5827],
-        [0.4374],
-        [0.4263]], grad_fn=&lt;SliceBackward0&gt;)
+            <div class="output-container"><pre class="output-stream">tensor([[0.6108],
+        [0.6464],
+        [0.6394],
+        [0.5041],
+        [0.6091]], grad_fn=&lt;SliceBackward0&gt;)
 </pre></div>
         </div>
         
@@ -591,7 +591,27 @@ config = Config()
 # Call the trainer function
 trainer(train_loader, val_loader, model, config)</code></pre>
             </div>
-            
+            <div class="output-container"><pre class="output-stream">
+=========================== Evaluating=========================
+Epoch [1/50]: Train loss: 0.2497, Valid loss: 0.2260
+
+Saving model with loss 0.226...
+</pre><pre class="output-stream">
+Saving model with loss 0.213...
+</pre><pre class="output-stream">
+Saving model with loss 0.210...
+</pre><pre class="output-stream">
+Saving model with loss 0.209...
+</pre><pre class="output-stream">
+=========================== Evaluating=========================
+Epoch [6/50]: Train loss: 0.1514, Valid loss: 0.2136
+</pre><pre class="output-stream">
+Saving model with loss 0.206...
+</pre><pre class="output-stream">
+=========================== Evaluating=========================
+Epoch [11/50]: Train loss: 0.0682, Valid loss: 0.2166
+</pre><pre class="output-stream">Early stopping after 5 epochs without improvement.
+</pre></div>
         </div>
         
                     </div>

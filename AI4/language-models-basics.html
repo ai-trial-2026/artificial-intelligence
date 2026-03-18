@@ -384,14 +384,14 @@ tokenizer = AutoTokenizer.from_pretrained(&quot;facebook/esm1b_t33_650M_UR50S&qu
 </pre><pre class="output-result">model.safetensors:   0%|          | 0.00/2.61G [00:00&lt;?, ?B/s]</pre><pre class="output-result">Loading weights:   0%|          | 0/536 [00:00&lt;?, ?it/s]</pre><pre class="output-stderr">[1mEsmModel LOAD REPORT[0m from: facebook/esm1b_t33_650M_UR50S
 Key                         | Status     | 
 ----------------------------+------------+-
-lm_head.dense.weight        | UNEXPECTED | 
-esm.embeddings.position_ids | UNEXPECTED | 
-lm_head.bias                | UNEXPECTED | 
-lm_head.layer_norm.bias     | UNEXPECTED | 
 lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+esm.embeddings.position_ids | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
 lm_head.dense.bias          | UNEXPECTED | 
-pooler.dense.bias           | MISSING    | 
+lm_head.dense.weight        | UNEXPECTED | 
 pooler.dense.weight         | MISSING    | 
+pooler.dense.bias           | MISSING    | 
 
 [3mNotes:
 - UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
